@@ -1,67 +1,52 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
 }
 
-.container {
-    max-width: 600px;
-    margin: 20px auto;
-    background-color: #fff;
+h1.titulo {
+    font-family: 'Courier New', Courier, monospace;
+    color: #2c3e50;
+}
+
+form, #resultado, #pagamento {
+    background: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-form {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 20px;
+    width: 300px;
 }
 
-label {
+label, input, select, button {
     display: block;
-    margin-bottom: 5px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 input, select, button {
-    width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
+    border: 1px solid #ccc;
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #3498db;
+    color: #fff;
     border: none;
     cursor: pointer;
 }
 
 button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+    background-color: #bdc3c7;
 }
 
-button:hover {
-    background-color: #45a049;
-}
-
-#pagamento {
-    display: none;
-}
-
-.mensagem {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    margin-top: 10px;
-    display: none;
+button:hover:not(:disabled) {
+    background-color: #2980b9;
 }
