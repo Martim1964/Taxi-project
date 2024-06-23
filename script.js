@@ -5,10 +5,18 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
 
         const carro = form.carro.value;
-        const distancia = parseFloat(form.distancia.value);
-        const tempo = parseFloat(form.tempo.value);
+        const minutos = parseFloat(form['tempo-minutos'].value);
+        const segundos = parseFloat(form['tempo-segundos'].value);
+        const km = parseFloat(form['distancia-km'].value);
+        const metros = parseFloat(form['distancia-metros'].value);
         const diasemana = form.diasemana.value.toLowerCase();
         const isferiado = form.isferiado.value.toLowerCase();
+
+        // Converting the time to minutes
+        const tempo = minutos + (segundos / 60);
+
+        // Converting the distance to kilometers
+        const distancia = km + (metros / 1000);
 
         let tarifaKm;
         let tarifaTempo;
