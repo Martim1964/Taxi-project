@@ -32,21 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
-            n = 1.15; // Aumento de 15% em feriados
+            n = 1.00; 
         } else {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 0.90; 
+                    n = 0.80; 
                     break;
                 case "sexta":
-                    n = 1.00; 
+                    n = 0.70; 
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.80; 
+                    n = 0.50; 
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
