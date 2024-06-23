@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.15;
+                tarifaKm = 1.30;
                 break;
             case "2":
-                tarifaKm = 1.35;
+                tarifaKm = 1.60;
                 break;
             case "3":
-                tarifaKm = 1.75;
+                tarifaKm = 1.90;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const precofinal = precolitro + precotempo;
 
         // Calculando o valor para o taxista e para a empresa
-        const precoempresa = precofinal * 0.30; // 25% para a empresa
-        const precotaxista = precofinal - precoempresa; // 75% para o taxista
+        const precoempresa = precofinal * 0.30; // 30% para a empresa
+        const precotaxista = precofinal - precoempresa; // 70% para o taxista
 
         // Exibindo o resultado na página
         const resultadoDiv = document.getElementById('resultado');
@@ -81,5 +81,25 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
             <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
+
+        // Exibindo o formulário de pagamento ao taxista
+        const formPagamento = document.getElementById('form-pagamento');
+        formPagamento.style.display = 'block';
+
+        // Capturando evento de clique no botão de confirmar pagamento
+        const btnConfirmarPagamento = document.getElementById('confirmar-pagamento');
+        btnConfirmarPagamento.addEventListener('click', function() {
+            const nomeTaxista = document.getElementById('nome-taxista').value;
+            const valorPagamento = parseFloat(document.getElementById('valor-pagamento').value);
+
+            if (!nomeTaxista || isNaN(valorPagamento) || valorPagamento <= 0) {
+                alert("Por favor, preencha todos os campos corretamente.");
+                return;
+            }
+
+            // Simulando pagamento
+            alert(`Pagamento de € ${valorPagamento.toFixed(2)} realizado ao taxista ${nomeTaxista} com sucesso!`);
+            formPagamento.style.display = 'none'; // Esconde o formulário após o pagamento
+        });
     });
 });
