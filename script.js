@@ -94,7 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
         pagamentoDiv.style.display = 'block';
     });
 
-    pagarBtn.addEventListener('click', function() {
+    // Listener de evento para o botão pagar
+    pagarBtn.addEventListener('click', realizarPagamento);
+
+    // Função para realizar o pagamento
+    function realizarPagamento() {
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
 
@@ -117,10 +121,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Desabilitar o botão de pagamento após o sucesso
             pagarBtn.disabled = true;
+
+            // Remover o listener de evento para evitar duplicação
+            pagarBtn.removeEventListener('click', realizarPagamento);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
-    });
+    }
 
     // Habilitar botão de pagamento quando ambos os campos estiverem preenchidos
     document.getElementById('nome').addEventListener('input', verificarFormulario);
