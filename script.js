@@ -16,38 +16,71 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.00;
-                tarifaTempo = 0.20;
+                tarifaKm = 0.05;
                 break;
             case "2":
-                tarifaKm = 1.50;
-                tarifaTempo = 0.25;
+                tarifaKm = 0.06;
                 break;
             case "3":
-                tarifaKm = 2.00;
-                tarifaTempo = 0.30;
+                tarifaKm = 0.07;
                 break;
             default:
                 alert("Tipo de carro inválido!");
                 return;
         }
 
-        let descontoKm = 0;
+        let n = 0;
 
-        // Aplicando desconto na tarifa por km se a distância for maior que 50 km
-        if (distancia > 50) {
-            descontoKm = (distancia - 50) * 0.03;
+        // Definindo o valor de n baseado no dia da semana e se é feriado
+        if (isferiado === "sim") {
+            n = 0.10;
+        } else {
+            switch (diasemana) {
+                case "domingo":
+                case "sábado":
+                    n = 0.08;
+                    break;
+                case "sexta":
+                    n = 0.07;
+                    break;
+                case "segunda":
+                case "terça":
+                case "quarta":
+                case "quinta":
+                    n = 0.05;
+                    break;
+                default:
+                    alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
+                    return;
+            }
         }
 
-        // Calculando o preço final da viagem
-        let precoFinal = (distancia * tarifaKm) + (tempo * tarifaTempo) - descontoKm;
-        let precoempresa = precofinal * 0.25;
-        let precofinaltotal = precoFinal - precoempresa
+        // Calculando o preço do tempo
+        const precotempo = (tempo / 10) * n;
+
+        // Calculando o preço do litro baseado na distância e na tarifa por km
+        let precolitro = distancia * tarifaKm;
+
+        // Aplicando desconto se a distância for maior que 1000 km
+        if (distancia > 1000) {
+            precolitro -= (distancia - 1000) * 0.01;
+        }
+
+        // Calculando o preço final
+        const precofinal = precolitro + precotempo;
+
+        // Calculando o valor para o taxista e para a empresa
+        const precoempresa = precofinal * 0.25;
+        const precotaxista = precofinal - precoempresa;
+
         // Exibindo o resultado na página
         const resultadoDiv = document.getElementById('resultado');
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
-            <p>Pagamento ao taxista: € ${precofinaltotal.toFixed(2)}</p>
+            <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
+            <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
+            <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
+            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
     });
 });
