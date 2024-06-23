@@ -32,21 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
-            n = 1.15; // Aumento de 1000%
+            n = 1.15; // Aumento de 15%
         } else {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 0.90; // Aumento de 800%
+                    n = 0.90; // Redução de 10%
                     break;
                 case "sexta":
-                    n = 1.00; // Aumento de 700%
+                    n = 1.00; // Redução de 0%
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.75; // Aumento de 500%
+                    n = 0.75; // Redução de 25%
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -79,4 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precotaxista.to
+            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
+            <p>Preço final estimado: € ${precofinal.toFixed(2)}</p>
+        `;
+    });
+});
