@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.80;
+                tarifaKm = 1.75;
                 break;
             case "2":
                 tarifaKm = 2.30;
@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', function() {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 0.90; // Redução de 10% aos fins de semana
+                    n = 1.20; 
                     break;
                 case "sexta":
-                    n = 1.00; // Sem alteração na sexta-feira
+                    n = 1.25; 
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.75; // Redução de 25% nos dias úteis
+                    n = 1.00; 
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
             <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
-            <p>Preço final estimado: € ${precofinal.toFixed(2)}</p>
         `;
     });
 });
