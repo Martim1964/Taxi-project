@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultadoDiv = document.getElementById('resultado');
     const pagarBtn = document.getElementById('pagar');
 
+    let precofinal = 0; // Variável para armazenar o preço final global
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -68,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
             precolitro -= (distancia - 1000) * 0.10 * tarifaKm; // Desconto de 10% para distâncias acima de 1000 km
         }
 
-        // Calculando o preço final
-        const precofinal = precolitro + precotempo;
+        // Calculando o preço final global
+        precofinal = precolitro + precotempo;
 
         // Calculando o preço para a empresa
         const precoempresa = precofinal * 0.25; // 25% para a empresa
@@ -90,14 +92,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
 
-        // Simular pagamento (exibir mensagem)
-        const mensagem = `O pagamento de € ${precofinal.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
-        alert(mensagem);
+        // Confirmação final do pagamento
+        const confirmacao = confirm(`Tem certeza que deseja pagar € ${precofinal.toFixed(2)} ao taxista ${nome}?`);
 
-        // Reiniciar o formulário
-        form.reset();
-        resultadoDiv.innerHTML = '';
-        pagamentoDiv.style.display = 'none';
+        if (confirmacao) {
+            // Simular pagamento (exibir mensagem)
+            const mensagem = `O pagamento de € ${precofinal.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
+            alert(mensagem);
+
+            // Reiniciar o formulário
+            form.reset();
+            resultadoDiv.innerHTML = '';
+            pagamentoDiv.style.display = 'none';
+        } else {
+            alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
+        }
     });
 
     // Habilitar botão de pagamento quando ambos os campos estiverem preenchidos
@@ -108,6 +117,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
 
- 
+        if (nome.trim() !== '' && telefone.trim() !== '') {
+            pagarBtn.disabled = false;
+        } else {
+            pagarBtn.disabled = true;
+        }
     }
 });
