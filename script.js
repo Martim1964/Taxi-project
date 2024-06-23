@@ -49,14 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         let precofinal;
-        if (distancia > 1000) {
-            const desconto = (distancia - 1000) * 0.01;
-            precofinal = (distancia * precolitro) - desconto;
-        } else {
             precofinal = distancia * precolitro;
         }
 
-        const precoempresa = precofinal * 0.35; // 35% do preço final para a empresa
+        const precoempresa = precofinal * 0.25; // 25% do preço final para a empresa
 
         const precotaxista = precofinal - precoempresa; // Valor para o taxista
 
