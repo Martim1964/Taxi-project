@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const pagamentoDiv = document.getElementById('pagamento');
-    const verificarButton = document.getElementById('verificarTaxi');
     const confirmarPagamentoButton = document.getElementById('confirmarPagamento');
     const resultadoDiv = document.getElementById('resultado');
     const nomeInput = document.getElementById('nome');
     const numeroTaxiInput = document.getElementById('numerotaxi');
-    let taxiConfirmado = false;
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -22,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.30;
+                tarifaKm = 1.15;
                 break;
             case "2":
-                tarifaKm = 1.60;
+                tarifaKm = 1.35;
                 break;
             case "3":
-                tarifaKm = 1.90;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -75,17 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculando o preço final
         const precofinal = precolitro + precotempo;
 
-        // Calculando o valor para o taxista e para a empresa
-        const precoempresa = precofinal * 0.30; // 30% para a empresa
-        const precotaxista = precofinal - precoempresa; // 70% para o taxista
-
         // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
-            <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
+            <p>Preço para o taxista: € ${precofinal.toFixed(2)}</p>
         `;
 
         // Mostrar o formulário de pagamento apenas se o número de táxi for fornecido
@@ -94,42 +87,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Verificar o número de táxi
-    verificarButton.addEventListener('click', function() {
-        const numeroTaxi = numeroTaxiInput.value.trim();
-
-        // Simular verificação (aqui apenas verifica se há um número de táxi fornecido)
-        if (numeroTaxi !== '') {
-            if (confirm(`Confirma o número de táxi ${numeroTaxi}?`)) {
-                taxiConfirmado = true;
-                confirmarPagamentoButton.style.display = 'block';
-                verificarButton.style.display = 'none';
-            } else {
-                alert('Por favor, insira o número de táxi novamente.');
-                taxiConfirmado = false;
-            }
-        } else {
-            alert('Por favor, insira o número de táxi.');
-        }
-    });
-
     // Confirmar pagamento
     confirmarPagamentoButton.addEventListener('click', function() {
-        if (taxiConfirmado) {
-            const nome = nomeInput.value.trim();
-            const numeroTaxi = numeroTaxiInput.value.trim();
+        const nome = nomeInput.value.trim();
+        const numeroTaxi = numeroTaxiInput.value.trim();
 
-            alert(`Pagamento de € ${precotaxista.toFixed(2)} feito para o taxista ${nome} com número de táxi ${numeroTaxi}.`);
-            // Aqui você pode adicionar lógica para realizar o pagamento real, se necessário
+        if (nome !== '' && numeroTaxi !== '') {
+            if (confirm(`Confirma o pagamento para o taxista ${nome} com número de táxi ${numeroTaxi}?`)) {
+                alert(`Pagamento confirmado para o taxista ${nome} com número de táxi ${numeroTaxi}.`);
+                // Aqui você pode adicionar lógica para realizar o pagamento real, se necessário
 
-            // Exemplo: resetar formulário
-            form.reset();
-            pagamentoDiv.style.display = 'none';
-            confirmarPagamentoButton.style.display = 'none';
-            verificarButton.style.display = 'block';
-            taxiConfirmado = false;
+                // Exemplo: resetar formulário e esconder div de pagamento
+                form.reset();
+                pagamentoDiv.style.display = 'none';
+            } else {
+                alert('Por favor, verifique os dados e confirme novamente o pagamento.');
+            }
         } else {
-            alert('Por favor, verifique o número de táxi antes de confirmar o pagamento.');
+            alert('Por favor, preencha todos os campos para continuar.');
         }
     });
 });
