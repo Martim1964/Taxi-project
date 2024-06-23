@@ -5,12 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
 
         const carro = form.carro.value;
-        const tempo = parseFloat(form.tempo.value);
         const distancia = parseFloat(form.distancia.value);
+        const tempo = parseFloat(form.tempo.value);
         const diasemana = form.diasemana.value.toLowerCase();
         const isferiado = form.isferiado.value.toLowerCase();
 
         let tarifaKm;
+        let tarifaTempo;
 
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
@@ -36,17 +37,17 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             switch (diasemana) {
                 case "domingo":
-                case "sabado":
-                    n = 0.80; // Aumento de 800%
+                case "sábado":
+                    n = 0.80; // Aumento de 1000%
                     break;
                 case "sexta":
-                    n = 0.70; // Aumento de 700%
+                    n = 0.70; // Aumento de 1000%
                     break;
                 case "segunda":
-                case "terca":
+                case "terça":
                 case "quarta":
                 case "quinta":
-                    n = 0.50; // Aumento de 500%
+                    n = 0.50; // Aumento de 1000%
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.10; // Desconto de 10% para distâncias acima de 1000 km
+            precolitro -= (distancia - 1000) * 0.10; // Aumento de 1000%
         }
 
         // Calculando o preço final
