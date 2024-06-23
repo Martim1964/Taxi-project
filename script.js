@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const isferiado = form.isferiado.value.toLowerCase();
 
         let tarifaKm;
-        let tarifaTempo;
 
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
@@ -59,25 +58,4 @@ document.addEventListener('DOMContentLoaded', function() {
         const precotempo = (tempo / 10) * n;
 
         // Calculando o preço do litro baseado na distância e na tarifa por km
-        let precolitro = distancia * tarifaKm;
-
-        // Aplicando desconto se a distância for maior que 1000 km
-        if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.10; // Desconto de 10% para distâncias acima de 1000 km
-        }
-
-        // Calculando o preço final
-        const precofinal = precolitro + precotempo;
-
-        // Calculando o valor para o taxista e para a empresa
-        const precoempresa = precofinal * 0.25;
-        const precotaxista = precofinal - precoempresa;
-
-        // Exibindo o resultado na página
-        const resultadoDiv = document.getElementById('resultado');
-        resultadoDiv.innerHTML = `
-            <h2>Resultado do Cálculo</h2>
-            <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
-            <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
-            <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precotaxi
+        let
