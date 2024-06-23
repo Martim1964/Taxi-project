@@ -127,4 +127,28 @@ document.addEventListener('DOMContentLoaded', function() {
             pagarBtn.disabled = true;
         }
     }
+    pagarBtn.addEventListener('click', function() {
+    const nome = document.getElementById('nome').value;
+    const telefone = document.getElementById('telefone').value;
+
+    // Confirmação final do pagamento
+    const confirmacao = confirm(`Tem certeza que deseja pagar € ${precofinal.toFixed(2)} ao taxista ${nome}?`);
+
+    if (confirmacao) {
+        // Simular pagamento (exibir mensagem)
+        const mensagem = `O pagamento de € ${precofinal.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
+        alert(mensagem + '\n\nPagamento bem-sucedido!');
+
+        // Reiniciar o formulário
+        form.reset();
+        resultadoDiv.innerHTML = '';
+        pagamentoDiv.style.display = 'none';
+
+        // Desabilitar o botão de pagamento após o sucesso
+        pagarBtn.disabled = true;
+    } else {
+        alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
+    }
+});
+
 });
