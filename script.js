@@ -32,21 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
-            n = 1.15; // Aumento de 15%
+            n = 1.15; // Aumento de 15% em feriados
         } else {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 0.90; // Redução de 10%
+                    n = 0.90; // Redução de 10% aos fins de semana
                     break;
                 case "sexta":
-                    n = 1.00; // Redução de 0%
+                    n = 1.00; // Sem alteração na sexta-feira
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.75; // Redução de 25%
+                    n = 0.75; // Redução de 25% nos dias úteis
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -62,15 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.10; // Desconto de 10% para distâncias acima de 1000 km
+            precolitro -= (distancia - 1000) * 0.10 * tarifaKm; // Desconto de 10% para distâncias acima de 1000 km
         }
 
         // Calculando o preço final
         const precofinal = precolitro + precotempo;
 
         // Calculando o valor para o taxista e para a empresa
-        const precoempresa = precofinal * 0.25;
-        const precotaxista = precofinal - precoempresa;
+        const precoempresa = precofinal * 0.25; // 25% para a empresa
+        const precotaxista = precofinal - precoempresa; // 75% para o taxista
 
         // Exibindo o resultado na página
         const resultadoDiv = document.getElementById('resultado');
