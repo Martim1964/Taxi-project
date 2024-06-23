@@ -2,8 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const pagamentoDiv = document.getElementById('pagamento');
     const verificarButton = document.getElementById('verificarTaxi');
+    const confirmarPagamentoButton = document.getElementById('confirmarPagamento');
     const resultadoDiv = document.getElementById('resultado');
-    let tentativas = 0;
+    const nomeInput = document.getElementById('nome');
+    const numeroTaxiInput = document.getElementById('numerotaxi');
+    let taxiConfirmado = false;
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -19,13 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.15;
+                tarifaKm = 1.30;
                 break;
             case "2":
-                tarifaKm = 1.35;
+                tarifaKm = 1.60;
                 break;
             case "3":
-                tarifaKm = 1.75;
+                tarifaKm = 1.90;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -86,39 +89,47 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Mostrar o formulário de pagamento apenas se o número de táxi for fornecido
-        if (document.getElementById('numerotaxi').value.trim() !== '') {
+        if (numeroTaxiInput.value.trim() !== '') {
             pagamentoDiv.style.display = 'block';
         }
     });
 
     // Verificar o número de táxi
     verificarButton.addEventListener('click', function() {
-        const numeroTaxi = document.getElementById('numerotaxi').value.trim();
+        const numeroTaxi = numeroTaxiInput.value.trim();
 
-        // Verificar se o número de táxi é válido (apenas para exemplo)
-        const numeroTaxiValido = validarNumeroTaxi(numeroTaxi);
-
-        if (numeroTaxiValido) {
-            alert(`Número de táxi válido: ${numeroTaxi}`);
-            tentativas = 0; // Resetar tentativas
-        } else {
-            tentativas++;
-            if (tentativas === 1) {
-                alert('Número de táxi incorreto. Por favor, tente novamente.');
-            } else if (tentativas === 2) {
-                alert('Número de táxi incorreto. Última tentativa.');
-            } else if (tentativas >= 3) {
-                alert('Você excedeu o número de tentativas permitidas. Por favor, recarregue a página para tentar novamente.');
-                // Desabilitar o botão após 3 tentativas falhadas
-                verificarButton.disabled = true;
+        // Simular verificação (aqui apenas verifica se há um número de táxi fornecido)
+        if (numeroTaxi !== '') {
+            if (confirm(`Confirma o número de táxi ${numeroTaxi}?`)) {
+                taxiConfirmado = true;
+                confirmarPagamentoButton.style.display = 'block';
+                verificarButton.style.display = 'none';
+            } else {
+                alert('Por favor, insira o número de táxi novamente.');
+                taxiConfirmado = false;
             }
+        } else {
+            alert('Por favor, insira o número de táxi.');
         }
     });
 
-    // Função simples para validar número de táxi (exemplo)
-    function validarNumeroTaxi(numeroTaxi) {
-        // Simulação de lógica para validar o número de táxi
-        // Neste exemplo, vamos considerar válido se o campo não estiver vazio
-        return numeroTaxi !== '';
-    }
+    // Confirmar pagamento
+    confirmarPagamentoButton.addEventListener('click', function() {
+        if (taxiConfirmado) {
+            const nome = nomeInput.value.trim();
+            const numeroTaxi = numeroTaxiInput.value.trim();
+
+            alert(`Pagamento de € ${precotaxista.toFixed(2)} feito para o taxista ${nome} com número de táxi ${numeroTaxi}.`);
+            // Aqui você pode adicionar lógica para realizar o pagamento real, se necessário
+
+            // Exemplo: resetar formulário
+            form.reset();
+            pagamentoDiv.style.display = 'none';
+            confirmarPagamentoButton.style.display = 'none';
+            verificarButton.style.display = 'block';
+            taxiConfirmado = false;
+        } else {
+            alert('Por favor, verifique o número de táxi antes de confirmar o pagamento.');
+        }
+    });
 });
