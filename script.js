@@ -1,54 +1,70 @@
-document.getElementById('simulador-form').addEventListener('submit', function(event) {
+// Selecionando o formulário pelo ID
+const form = document.getElementById('simulador-form');
+
+// Adicionando um event listener para capturar o evento de submit do formulário
+form.addEventListener('submit', function(event) {
+    // Prevenindo o comportamento padrão do formulário de ser enviado
     event.preventDefault();
 
-    let carro = document.getElementById('carro').value;
-    let tempo = parseFloat(document.getElementById('tempo').value);
-    let distancia = parseFloat(document.getElementById('distancia').value);
-    let diasemana = document.getElementById('diasemana').value.toLowerCase();
-    let isferiado = document.getElementById('isferiado').value.toLowerCase();
+    // Obtendo os valores dos campos do formulário
+    const carro = document.getElementById('carro').value;
+    const tempo = parseFloat(document.getElementById('tempo').value); // Convertendo para número
+    const distancia = parseFloat(document.getElementById('distancia').value); // Convertendo para número
+    const diasemana = document.getElementById('diasemana').value.toLowerCase(); // Convertendo para minúsculas
+    const isferiado = document.getElementById('isferiado').value.toLowerCase(); // Convertendo para minúsculas
 
+    // Verificando o desconto com base no dia da semana e se é feriado
     let n = 0;
     if (isferiado === "sim") {
         n = 0.10;
-    } else if (diasemana === "sabado" || diasemana === "domingo") {
+    } else if (diasemana === "sábado" || diasemana === "domingo") {
         n = 0.08;
-    } else if (diasemana === "sexta") {
+    } else if (diasemana === "sexta-feira") {
         n = 0.07;
-    } else if (diasemana === "segunda" || diasemana === "terca" || diasemana === "quarta" || diasemana === "quinta") {
+    } else if (diasemana === "segunda-feira" || diasemana === "terça-feira" || diasemana === "quarta-feira" || diasemana === "quinta-feira") {
         n = 0.05;
     } else {
-        alert("Dia da semana inválido");
-        return;
+        // Caso o dia da semana não seja reconhecido, pode tratar como desejar
+        alert("Dia da semana inválido!");
+        return; // Sair da função se o dia da semana for inválido
     }
 
-    let precotempo = (tempo / 10) * n;
-    let precolitro = 0;
+    // Calculando o preço do tempo
+    const precotempo = (tempo / 10) * n;
 
-    if (carro === "1") {
-        precolitro = distancia * 0.02;
-    } else if (carro === "2") {
-        precolitro = distancia * 0.03;
-    } else if (carro === "3") {
-        precolitro = distancia * 0.04;
+    // Definindo o preço do litro com base no carro escolhido
+    let precolitro;
+    switch (carro) {
+        case '1':
+            precolitro = 0.02;
+            break;
+        case '2':
+            precolitro = 0.03;
+            break;
+        case '3':
+            precolitro = 0.04;
+            break;
+        default:
+            // Caso o carro não seja reconhecido, pode tratar como desejar
+            alert("Carro inválido!");
+            return; // Sair da função se o carro for inválido
     }
 
-    const limiteDistancia = 1000;
-    if (distancia > limiteDistancia) {
-        let desconto = (distancia - limiteDistancia) * 0.01;
-        precolitro = (distancia * precolitro) - desconto;
+    // Calculando o preço do litro
+    let precofinal;
+    if (distancia > 1000) {
+        const desconto = (distancia - 1000) * 0.01;
+        precofinal = (distancia * precolitro) - desconto;
     } else {
-        precolitro = distancia * precolitro;
+        precofinal = distancia * precolitro;
     }
 
-    let precofinal = precolitro + precotempo;
-    let precotaxista = precofinal;
-    let precoempresa = precofinal * 0.25;
-    let precofinaltaxista = precotaxista - precoempresa;
-
-    let resultadoDiv = document.getElementById('resultado');
+    // Exibindo o resultado na div resultado
+    const resultadoDiv = document.getElementById('resultado');
     resultadoDiv.innerHTML = `
-        <p>Preço taxista sem taxas: €${precotaxista.toFixed(2)}</p>
-        <p>Preço para a empresa: €${precoempresa.toFixed(2)}</p>
-        <p>Preço total ganho pelo taxista: €${precofinaltaxista.toFixed(2)}</p>
+        <h2>Resultado do Cálculo</h2>
+        <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
+        <p>Preço do litro: € ${precofinal.toFixed(2)}</p>
+        <p>Total: € ${(precotempo + precofinal).toFixed(2)}</p>
     `;
 });
