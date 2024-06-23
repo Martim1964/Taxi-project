@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.75;
+                tarifaKm = 1.50;
                 break;
             case "2":
-                tarifaKm = 2.30;
+                tarifaKm = 1.75;
                 break;
             case "3":
-                tarifaKm = 2.70;
+                tarifaKm = 2.00;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', function() {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 1.20; 
+                    n = 0.90; 
                     break;
                 case "sexta":
-                    n = 1.25; 
+                    n = 1.00; 
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 1.00; 
+                    n = 0.80; 
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const precofinal = precolitro + precotempo;
 
         // Calculando o valor para o taxista e para a empresa
-        const precoempresa = precofinal * 0.25; // 25% para a empresa
+        const precoempresa = precofinal * 0.30; // 25% para a empresa
         const precotaxista = precofinal - precoempresa; // 75% para o taxista
 
         // Exibindo o resultado na página
