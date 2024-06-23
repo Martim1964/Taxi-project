@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaxiPay</title>
-    <script src="https://martim1964.github.io/Taxi-project/script.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,11 +16,13 @@
             <option value="3">Porsche Cayenne GTS</option>
         </select>
 
-        <label for="tempo">Tempo percorrido (minutos):</label>
-        <input type="number" id="tempo" name="tempo" required>
+        <label for="tempo-minutos">Tempo percorrido (minutos):</label>
+        <input type="number" id="tempo-minutos" name="tempo-minutos" placeholder="Minutos" required>
+        <input type="number" id="tempo-segundos" name="tempo-segundos" placeholder="Segundos" required>
 
-        <label for="distancia">Distância percorrida (km):</label>
-        <input type="number" id="distancia" name="distancia" required>
+        <label for="distancia-km">Distância percorrida (km):</label>
+        <input type="number" id="distancia-km" name="distancia-km" placeholder="Quilômetros" required>
+        <input type="number" id="distancia-metros" name="distancia-metros" placeholder="Metros" required>
 
         <label for="diasemana">Dia da semana:</label>
         <select id="diasemana" name="diasemana" required>
@@ -36,8 +37,8 @@
 
         <label for="isferiado">É feriado?:</label>
         <select id="isferiado" name="isferiado" required>
-            <option value="nao">nao</option>
             <option value="sim">sim</option>
+            <option value="nao">não</option>
         </select>
 
         <button type="submit">Calcular</button>
