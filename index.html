@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Insira o carro usado para a viagem</h1>
+    <h1>TaxiPay</h1>
     <form id="simulador-form">
-        <label for="carro">Escolha o carro:</label>
+        <label for="carro">Insira o carro usado para a viagem:</label>
         <select id="carro" name="carro">
             <option value="1">Peugeot 208</option>
             <option value="2">Mercedes GLA</option>
@@ -24,21 +24,21 @@
         <input type="number" id="distancia" name="distancia" required>
 
         <label for="diasemana">Dia da semana:</label>
-        <select id="diasemana" name="diasemana">
-            <option value="1">segunda</option>
-            <option value="2">terca</option>
-            <option value="3">quarta</option>
-            <option value="4">quinta</option>
-            <option value="5">sexta</option>
-            <option value="6">sabado</option>
-            <option value="7">domingo</option>
-            
+        <select id="diasemana" name="diasemana" required>
+            <option value="segunda">segunda</option>
+            <option value="terca">terça</option>
+            <option value="quarta">quarta</option>
+            <option value="quinta">quinta</option>
+            <option value="sexta">sexta</option>
+            <option value="sabado">sábado</option>
+            <option value="domingo">domingo</option>
+        </select>
 
-
-        <label for="isferiado">É feriado?):</label>
-        <select id="isferiado" name="isferiado">
-            <option value="1">sim</option>
-            <option value="2">nao</option>>
+        <label for="isferiado">É feriado?:</label>
+        <select id="isferiado" name="isferiado" required>
+            <option value="sim">sim</option>
+            <option value="nao">não</option>
+        </select>
 
         <button type="submit">Calcular</button>
     </form>
