@@ -5,18 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
 
         const carro = form.carro.value;
-        const minutos = parseFloat(form['tempo-minutos'].value);
-        const segundos = parseFloat(form['tempo-segundos'].value);
-        const km = parseFloat(form['distancia-km'].value);
-        const metros = parseFloat(form['distancia-metros'].value);
+        const tempo = parseFloat(form.tempo.value);
+        const distancia = parseFloat(form.distancia.value);
         const diasemana = form.diasemana.value.toLowerCase();
         const isferiado = form.isferiado.value.toLowerCase();
-
-        // Converting the time to minutes
-        const tempo = minutos + (segundos / 60);
-
-        // Converting the distance to kilometers
-        const distancia = km + (metros / 1000);
 
         let tarifaKm;
         let tarifaTempo;
@@ -46,16 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 0.80; // Aumento de 1000%
+                    n = 0.80; // Aumento de 800%
                     break;
                 case "sexta":
-                    n = 0.70; // Aumento de 1000%
+                    n = 0.70; // Aumento de 700%
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.50; // Aumento de 1000%
+                    n = 0.50; // Aumento de 500%
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -71,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.10; // Aumento de 1000%
+            precolitro -= (distancia - 1000) * 0.10; // Desconto de 10% para distâncias acima de 1000 km
         }
 
         // Calculando o preço final
@@ -88,7 +80,4 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
-        `;
-    });
-});
+            <p>Preço para o taxista: € ${precotaxi
