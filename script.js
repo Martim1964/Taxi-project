@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let precolitro;
         switch (carro) {
             case 1:
-                precolitro = 0.02;
+                precolitro = 0.05; // Preço do Peugeot 208 por km
                 break;
             case 2:
-                precolitro = 0.03;
+                precolitro = 0.06; // Preço do Mercedes GLA por km
                 break;
             case 3:
-                precolitro = 0.04;
+                precolitro = 0.07; // Preço do Porsche Cayenne GTS por km
                 break;
             default:
                 alert("Carro inválido!");
@@ -49,10 +49,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         let precofinal;
+        if (distancia > 1000) {
+            const desconto = (distancia - 1000) * 0.01;
+            precofinal = (distancia * precolitro) - desconto;
+        } else {
             precofinal = distancia * precolitro;
         }
 
-        const precoempresa = precofinal * 0.25; // 25% do preço final para a empresa
+        const precoempresa = precofinal * 0.15; // 15% do preço final para a empresa
 
         const precotaxista = precofinal - precoempresa; // Valor para o taxista
 
