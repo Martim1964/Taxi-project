@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
+    const pagamentoDiv = document.getElementById('pagamento');
+    const verificarButton = document.getElementById('verificarTaxi');
+    const resultadoDiv = document.getElementById('resultado');
+    let tentativas = 0;
+
+    // Simulação de base de dados de taxistas
+    const baseDeDadosTaxistas = [
+        { nome: 'João', numeroTaxi: '1234' },
+        { nome: 'Maria', numeroTaxi: '5678' },
+        { nome: 'Pedro', numeroTaxi: '91011' }
+    ];
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -15,13 +26,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.30;
+                tarifaKm = 1.15;
                 break;
             case "2":
-                tarifaKm = 1.60;
+                tarifaKm = 1.35;
                 break;
             case "3":
-                tarifaKm = 1.90;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -73,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const precotaxista = precofinal - precoempresa; // 70% para o taxista
 
         // Exibindo o resultado na página
-        const resultadoDiv = document.getElementById('resultado');
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
@@ -82,54 +92,32 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
 
-        // Exibindo o formulário de pagamento ao taxista
-        resultadoDiv.innerHTML += `
-            <div id="form-pagamento">
-                <h2>Pagamento ao Taxista</h2>
-                <label for="nome-taxista">Nome do Taxista:</label>
-                <input type="text" id="nome-taxista" name="nome-taxista" required>
+        // Mostrar o formulário de pagamento
+        pagamentoDiv.style.display = 'block';
+    });
 
-                <label for="telefone-taxista">Telefone do Taxista:</label>
-                <input type="tel" id="telefone-taxista" name="telefone-taxista" required>
+    // Verificar o número de táxi
+    verificarButton.addEventListener('click', function() {
+        const nome = document.getElementById('nome').value.trim();
+        const numeroTaxi = document.getElementById('numerotaxi').value.trim();
 
-                <button id="confirmar-pagamento">Pagar por MBWay</button>
-            </div>
-        `;
+        // Verificar se o número de táxi está na base de dados
+        const taxistaEncontrado = baseDeDadosTaxistas.find(taxista => taxista.numeroTaxi === numeroTaxi);
 
-        // Capturando evento de clique no botão de confirmar pagamento
-        const btnConfirmarPagamento = document.getElementById('confirmar-pagamento');
-        btnConfirmarPagamento.addEventListener('click', function() {
-            const nomeTaxista = document.getElementById('nome-taxista').value;
-            const telefoneTaxista = document.getElementById('telefone-taxista').value;
-
-            if (!nomeTaxista || !telefoneTaxista) {
-                alert("Por favor, preencha todos os campos corretamente.");
-                return;
+        if (taxistaEncontrado) {
+            alert(`Taxista encontrado! Nome: ${taxistaEncontrado.nome}, Número de Táxi: ${taxistaEncontrado.numeroTaxi}`);
+            tentativas = 0; // Resetar tentativas
+        } else {
+            tentativas++;
+            if (tentativas === 1) {
+                alert('Número de táxi incorreto. Por favor, tente novamente.');
+            } else if (tentativas === 2) {
+                alert('Número de táxi incorreto. Última tentativa.');
+            } else if (tentativas >= 3) {
+                alert('Você excedeu o número de tentativas permitidas. Por favor, recarregue a página para tentar novamente.');
+                // Desabilitar o botão após 3 tentativas falhadas
+                verificarButton.disabled = true;
             }
-
-            // Simulando pagamento por MBWay (substitua esta lógica com uma integração real)
-            const pagamentoRealizado = realizarPagamentoMBWay(nomeTaxista, telefoneTaxista, precotaxista);
-
-            if (pagamentoRealizado) {
-                alert(`Pagamento de € ${precotaxista.toFixed(2)} realizado para ${nomeTaxista} com sucesso!`);
-
-                // Limpando o formulário de pagamento
-                document.getElementById('nome-taxista').value = '';
-                document.getElementById('telefone-taxista').value = '';
-
-                // Limpando o resultado do cálculo na tela
-                resultadoDiv.innerHTML = '';
-            } else {
-                alert("Falha ao processar o pagamento. Por favor, tente novamente mais tarde.");
-            }
-        });
+        }
     });
 });
-
-// Função simulada para realizar o pagamento por MBWay
-function realizarPagamentoMBWay(nomeTaxista, telefoneTaxista, valor) {
-    // Aqui você substituiria com a lógica real de integração com MBWay
-    // Esta função simula um pagamento bem-sucedido para o exemplo
-    console.log(`Pagamento de € ${valor.toFixed(2)} para ${nomeTaxista} (${telefoneTaxista}) via MBWay.`);
-    return true; // Simulando sucesso
-}
