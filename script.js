@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultadoDiv = document.getElementById('resultado');
     const pagarBtn = document.getElementById('pagar');
 
-    let total = 0; // Variável para armazenar o valor total
+    let precofinal = 0; // Variável para armazenar o preço final
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -71,20 +71,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Calculando o preço total
-        total = precolitro + precotempo;
+        precofinal = precolitro + precotempo;
 
         // Calculando a comissão da empresa
-        const empresaParte = total * 0.25;
-        const taxistaParte = total - empresaParte;
+        const empresaParte = precofinal * 0.25;
+        const taxistaParte = precofinal - empresaParte;
 
         // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
-            <p>Preço total: € ${total.toFixed(2)}</p>
-            <p>Parte da Empresa: € ${empresaParte.toFixed(2)}</p>
-            <p>Parte do Taxista: € ${taxistaParte.toFixed(2)}</p>
+            <p>Preço total que o taxista deve cobrar do cliente: € ${precofinal.toFixed(2)}</p>
+            <p>Parte da Empresa (25%): € ${empresaParte.toFixed(2)}</p>
+            <p>Parte do Taxista após comissão: € ${taxistaParte.toFixed(2)}</p>
         `;
 
         // Mostrar o formulário de pagamento
@@ -96,11 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const telefone = document.getElementById('telefone').value;
 
         // Confirmação final do pagamento
-        const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(total * 0.25).toFixed(2)})?`);
+        const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
         if (confirmacao) {
             // Simular pagamento (exibir mensagem)
-            const mensagem = `O pagamento de € ${(total * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
+            const mensagem = `O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
             alert(mensagem + '\n\nPagamento bem-sucedido!');
 
             // Reiniciar o formulário
