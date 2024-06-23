@@ -45,14 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             switch (diasemana) {
                 case "domingo":
-                case "sábado":
+                case "sabado":
                     n = 0.80; // Aumento de 1000%
                     break;
                 case "sexta":
                     n = 0.70; // Aumento de 1000%
                     break;
                 case "segunda":
-                case "terça":
+                case "terca":
                 case "quarta":
                 case "quinta":
                     n = 0.50; // Aumento de 1000%
