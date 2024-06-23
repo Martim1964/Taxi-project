@@ -16,11 +16,11 @@
             <option value="3">Porsche Cayenne GTS</option>
         </select>
 
-        <label for="tempo-minutos">Tempo percorrido (minutos):</label>
+        <label for="tempo-minutos">Tempo percorrido (minutos e segundos):</label>
         <input type="number" id="tempo-minutos" name="tempo-minutos" placeholder="Minutos" required>
         <input type="number" id="tempo-segundos" name="tempo-segundos" placeholder="Segundos" required>
 
-        <label for="distancia-km">Distância percorrida (km):</label>
+        <label for="distancia-km">Distância percorrida (km e metros):</label>
         <input type="number" id="distancia-km" name="distancia-km" placeholder="Quilômetros" required>
         <input type="number" id="distancia-metros" name="distancia-metros" placeholder="Metros" required>
 
@@ -37,8 +37,8 @@
 
         <label for="isferiado">É feriado?:</label>
         <select id="isferiado" name="isferiado" required>
-            <option value="sim">sim</option>
             <option value="nao">não</option>
+            <option value="sim">sim</option>
         </select>
 
         <button type="submit">Calcular</button>
