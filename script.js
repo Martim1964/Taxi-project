@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tarifaKm = 1.50;
                 break;
             case "3":
-                tarifaKm = 2.00;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
