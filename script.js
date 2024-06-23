@@ -75,13 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Calculando o preço para a empresa
         const precoempresa = precofinal * 0.25; // 25% para a empresa
-
+        
+        //Calculo preco para o taxista
+        const precofinaltaxista = precofinal - precoempresa;
         // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
+            <p>Preço para o taxista: € ${precofinaltaxista.toFixed(2)}</p>
+
         `;
 
         // Mostrar o formulário de pagamento
