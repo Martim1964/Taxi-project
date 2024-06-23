@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.15;
+                tarifaKm = 1.30;
                 break;
             case "2":
-                tarifaKm = 1.35;
+                tarifaKm = 1.60;
                 break;
             case "3":
-                tarifaKm = 1.75;
+                tarifaKm = 1.90;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const pagamentoRealizado = realizarPagamentoMBWay(nomeTaxista, telefoneTaxista, precotaxista);
 
             if (pagamentoRealizado) {
-                alert(`Pagamento de € ${precotaxista.toFixed(2)} realizado para ${nomeTaxista} via MBWay com sucesso!`);
+                alert(`Pagamento de € ${precotaxista.toFixed(2)} realizado para ${nomeTaxista} com sucesso!`);
 
                 // Limpando o formulário de pagamento
                 document.getElementById('nome-taxista').value = '';
