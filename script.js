@@ -76,8 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculando o preço para a empresa
         const precoempresa = precofinal * 0.25; // 25% para a empresa
         
-        //Calculo preco para o taxista
+        // Calculando o preço para o taxista
         const precofinaltaxista = precofinal - precoempresa;
+
         // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
@@ -85,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
             <p>Preço para o taxista: € ${precofinaltaxista.toFixed(2)}</p>
-
         `;
 
         // Mostrar o formulário de pagamento
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirmacao) {
             // Simular pagamento (exibir mensagem)
             const mensagem = `O pagamento de € ${precofinal.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
-            alert(mensagem);
+            alert(mensagem + '\n\nPagamento bem-sucedido!');
 
             // Reiniciar o formulário
             form.reset();
