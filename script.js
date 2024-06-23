@@ -89,10 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label for="nome-taxista">Nome do Taxista:</label>
                 <input type="text" id="nome-taxista" name="nome-taxista" required>
 
-                <label for="valor-pagamento">Valor a Pagar (€):</label>
-                <input type="number" id="valor-pagamento" name="valor-pagamento" step="0.01" required>
+                <label for="telefone-taxista">Telefone do Taxista:</label>
+                <input type="tel" id="telefone-taxista" name="telefone-taxista" required>
 
-                <button id="confirmar-pagamento">Confirmar Pagamento</button>
+                <button id="confirmar-pagamento">Pagar por MBWay</button>
             </div>
         `;
 
@@ -100,22 +100,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnConfirmarPagamento = document.getElementById('confirmar-pagamento');
         btnConfirmarPagamento.addEventListener('click', function() {
             const nomeTaxista = document.getElementById('nome-taxista').value;
-            const valorPagamento = parseFloat(document.getElementById('valor-pagamento').value);
+            const telefoneTaxista = document.getElementById('telefone-taxista').value;
 
-            if (!nomeTaxista || isNaN(valorPagamento) || valorPagamento <= 0) {
+            if (!nomeTaxista || !telefoneTaxista) {
                 alert("Por favor, preencha todos os campos corretamente.");
                 return;
             }
 
-            // Simulando pagamento
-            alert(`Pagamento de € ${valorPagamento.toFixed(2)} realizado ao taxista ${nomeTaxista} com sucesso!`);
+            // Simulando pagamento por MBWay (substitua esta lógica com uma integração real)
+            const pagamentoRealizado = realizarPagamentoMBWay(nomeTaxista, telefoneTaxista, precotaxista);
 
-            // Limpando o formulário de pagamento
-            document.getElementById('nome-taxista').value = '';
-            document.getElementById('valor-pagamento').value = '';
+            if (pagamentoRealizado) {
+                alert(`Pagamento de € ${precotaxista.toFixed(2)} realizado para ${nomeTaxista} via MBWay com sucesso!`);
 
-            // Limpando o resultado do cálculo na tela
-            resultadoDiv.innerHTML = '';
+                // Limpando o formulário de pagamento
+                document.getElementById('nome-taxista').value = '';
+                document.getElementById('telefone-taxista').value = '';
+
+                // Limpando o resultado do cálculo na tela
+                resultadoDiv.innerHTML = '';
+            } else {
+                alert("Falha ao processar o pagamento. Por favor, tente novamente mais tarde.");
+            }
         });
     });
 });
+
+// Função simulada para realizar o pagamento por MBWay
+function realizarPagamentoMBWay(nomeTaxista, telefoneTaxista, valor) {
+    // Aqui você substituiria com a lógica real de integração com MBWay
+    // Esta função simula um pagamento bem-sucedido para o exemplo
+    console.log(`Pagamento de € ${valor.toFixed(2)} para ${nomeTaxista} (${telefoneTaxista}) via MBWay.`);
+    return true; // Simulando sucesso
+}
