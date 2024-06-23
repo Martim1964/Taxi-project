@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const pagamentoDiv = document.getElementById('pagamento');
-    const confirmarPagamentoButton = document.getElementById('confirmarPagamento');
-    const resultadoDiv = document.getElementById('resultado');
-    const nomeInput = document.getElementById('nome');
-    const numeroTaxiInput = document.getElementById('numerotaxi');
-
+    const pagarButton = document.getElementById('pagar');
+    
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -20,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.30;
+                tarifaKm = 1.15;
                 break;
             case "2":
-                tarifaKm = 1.60;
+                tarifaKm = 1.35;
                 break;
             case "3":
-                tarifaKm = 1.90;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -73,38 +70,50 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculando o preço final
         const precofinal = precolitro + precotempo;
 
+        // Calculando o valor para o taxista e para a empresa
+        const precoempresa = precofinal * 0.30; // 30% para a empresa
+        const precotaxista = precofinal - precoempresa; // 70% para o taxista
+
         // Exibindo o resultado na página
+        const resultadoDiv = document.getElementById('resultado');
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precofinal.toFixed(2)}</p>
+            <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
+            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
 
-        // Mostrar o formulário de pagamento apenas se o número de táxi for fornecido
-        if (numeroTaxiInput.value.trim() !== '') {
-            pagamentoDiv.style.display = 'block';
-        }
+        // Habilitar o formulário de pagamento
+        pagamentoDiv.style.display = 'block';
     });
 
-    // Confirmar pagamento
-    confirmarPagamentoButton.addEventListener('click', function() {
-        const nome = nomeInput.value.trim();
-        const numeroTaxi = numeroTaxiInput.value.trim();
+    // Verificar se os campos de nome e telefone foram preenchidos para habilitar o botão de pagar
+    const nomeInput = document.getElementById('nome');
+    const telefoneInput = document.getElementById('telefone');
 
-        if (nome !== '' && numeroTaxi !== '') {
-            if (confirm(`Confirma o pagamento para o taxista ${nome} com número de táxi ${numeroTaxi}?`)) {
-                alert(`Pagamento confirmado para o taxista ${nome} com número de táxi ${numeroTaxi}.`);
-                // Aqui você pode adicionar lógica para realizar o pagamento real, se necessário
+    nomeInput.addEventListener('input', verificarCampos);
+    telefoneInput.addEventListener('input', verificarCampos);
 
-                // Exemplo: resetar formulário e esconder div de pagamento
-                form.reset();
-                pagamentoDiv.style.display = 'none';
-            } else {
-                alert('Por favor, verifique os dados e confirme novamente o pagamento.');
-            }
+    function verificarCampos() {
+        if (nomeInput.value.trim() !== '' && telefoneInput.value.trim() !== '') {
+            pagarButton.disabled = false;
         } else {
-            alert('Por favor, preencha todos os campos para continuar.');
+            pagarButton.disabled = true;
         }
+    }
+
+    // Ação ao clicar no botão de pagar
+    pagarButton.addEventListener('click', function() {
+        const nome = nomeInput.value.trim();
+        const telefone = telefoneInput.value.trim();
+
+        if (nome === '' || telefone === '') {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        // Simulação de pagamento
+        alert(`Pagamento de € ${precotaxista.toFixed(2)} para ${nome} no número ${telefone} foi efetuado com sucesso!`);
     });
 });
