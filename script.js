@@ -108,10 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
 
-        if (nome.trim() !== '' && telefone.trim() !== '') {
-            pagarBtn.disabled = false;
-        } else {
-            pagarBtn.disabled = true;
-        }
+ 
     }
 });
