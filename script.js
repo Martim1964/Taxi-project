@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.30;
+                tarifaKm = 1.15;
                 break;
             case "2":
-                tarifaKm = 1.60;
+                tarifaKm = 1.35;
                 break;
             case "3":
-                tarifaKm = 1.90;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -100,6 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Simulando pagamento
             alert(`Pagamento de € ${valorPagamento.toFixed(2)} realizado ao taxista ${nomeTaxista} com sucesso!`);
             formPagamento.style.display = 'none'; // Esconde o formulário após o pagamento
+            form.reset(); // Limpa o formulário de cálculo
+            resultadoDiv.innerHTML = ''; // Limpa o resultado do cálculo na tela
         });
     });
 });
