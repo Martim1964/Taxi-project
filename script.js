@@ -41,12 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Calculando o preço final da viagem
         let precoFinal = (distancia * tarifaKm) + (tempo * tarifaTempo) - descontoKm;
-
+        let precoempresa = precofinal * 0.25;
+        let precofinaltotal = precoFinal - precoempresa
         // Exibindo o resultado na página
         const resultadoDiv = document.getElementById('resultado');
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
-            <p>Preço estimado da corrida: € ${precoFinal.toFixed(2)}</p>
+            <p>Pagamento ao taxista: € ${precofinaltotal.toFixed(2)}</p>
         `;
     });
 });
