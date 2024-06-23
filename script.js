@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.30;
+                tarifaKm = 1.15;
                 break;
             case "2":
-                tarifaKm = 1.60;
+                tarifaKm = 1.35;
                 break;
             case "3":
-                tarifaKm = 2.00;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -83,8 +83,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // Exibindo o formulário de pagamento ao taxista
-        const formPagamento = document.getElementById('form-pagamento');
-        formPagamento.style.display = 'block';
+        resultadoDiv.innerHTML += `
+            <div id="form-pagamento">
+                <h2>Pagamento ao Taxista</h2>
+                <label for="nome-taxista">Nome do Taxista:</label>
+                <input type="text" id="nome-taxista" name="nome-taxista" required>
+
+                <label for="valor-pagamento">Valor a Pagar (€):</label>
+                <input type="number" id="valor-pagamento" name="valor-pagamento" step="0.01" required>
+
+                <button id="confirmar-pagamento">Confirmar Pagamento</button>
+            </div>
+        `;
 
         // Capturando evento de clique no botão de confirmar pagamento
         const btnConfirmarPagamento = document.getElementById('confirmar-pagamento');
@@ -99,9 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Simulando pagamento
             alert(`Pagamento de € ${valorPagamento.toFixed(2)} realizado ao taxista ${nomeTaxista} com sucesso!`);
-            formPagamento.style.display = 'none'; // Esconde o formulário após o pagamento
-            form.reset(); // Limpa o formulário de cálculo
-            resultadoDiv.innerHTML = ''; // Limpa o resultado do cálculo na tela
+
+            // Limpando o formulário de pagamento
+            document.getElementById('nome-taxista').value = '';
+            document.getElementById('valor-pagamento').value = '';
+
+            // Limpando o resultado do cálculo na tela
+            resultadoDiv.innerHTML = '';
         });
     });
 });
