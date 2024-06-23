@@ -16,15 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 2.00;
+                tarifaKm = 1.00;
                 tarifaTempo = 0.20;
                 break;
             case "2":
-                tarifaKm = 2.25;
+                tarifaKm = 1.50;
                 tarifaTempo = 0.25;
                 break;
             case "3":
-                tarifaKm = 2.50;
+                tarifaKm = 2.00;
                 tarifaTempo = 0.30;
                 break;
             default:
