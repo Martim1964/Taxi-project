@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 0.05;
+                tarifaKm = 0.50;
                 break;
             case "2":
-                tarifaKm = 0.06;
+                tarifaKm = 0.60;
                 break;
             case "3":
-                tarifaKm = 0.07;
+                tarifaKm = 0.70;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -33,21 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
-            n = 0.10;
+            n = 1.00; // Aumento de 1000%
         } else {
             switch (diasemana) {
                 case "domingo":
                 case "sábado":
-                    n = 0.08;
+                    n = 0.80; // Aumento de 1000%
                     break;
                 case "sexta":
-                    n = 0.07;
+                    n = 0.70; // Aumento de 1000%
                     break;
                 case "segunda":
                 case "terça":
                 case "quarta":
                 case "quinta":
-                    n = 0.05;
+                    n = 0.50; // Aumento de 1000%
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.01;
+            precolitro -= (distancia - 1000) * 0.10; // Aumento de 1000%
         }
 
         // Calculando o preço final
