@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
             case "domingo":
                 n = 0.08;
                 break;
-            case "sexta-feira":
+            case "sexta":
                 n = 0.07;
                 break;
-            case "segunda-feira":
-            case "terça-feira":
-            case "quarta-feira":
-            case "quinta-feira":
+            case "segunda":
+            case "terça":
+            case "quarta":
+            case "quinta":
                 n = 0.05;
                 break;
             default:
