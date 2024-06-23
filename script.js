@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.75;
+                tarifaKm = 1.50;
                 break;
             case "2":
-                tarifaKm = 2.15;
+                tarifaKm = 2.00;
                 break;
             case "3":
                 tarifaKm = 2.50;
@@ -32,21 +32,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
-            n = 1.00; // Aumento de 1000%
+            n = 1.15; // Aumento de 1000%
         } else {
             switch (diasemana) {
                 case "domingo":
                 case "sabado":
-                    n = 0.80; // Aumento de 800%
+                    n = 0.90; // Aumento de 800%
                     break;
                 case "sexta":
-                    n = 0.70; // Aumento de 700%
+                    n = 1.00; // Aumento de 700%
                     break;
                 case "segunda":
                 case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.50; // Aumento de 500%
+                    n = 0.75; // Aumento de 500%
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
