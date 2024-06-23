@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const mensagemDiv = document.getElementById('mensagem');
 
     let precofinal = 0; // Variável para armazenar o preço final global
+    let precofinaltaxista = 0; // Variável para armazenar o preço para o taxista
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const precoempresa = precofinal * 0.25; // 25% para a empresa
         
         // Calculando o preço para o taxista
-        const precofinaltaxista = precofinal - precoempresa;
+        precofinaltaxista = precofinal - precoempresa;
 
         // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
@@ -98,15 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const telefone = document.getElementById('telefone').value;
 
         // Confirmação final do pagamento
-        const confirmacao = confirm(`Tem certeza que deseja pagar € ${precofinal.toFixed(2)} ao taxista ${nome}?`);
+        const confirmacao = confirm(`Tem certeza que deseja pagar € ${precofinaltaxista.toFixed(2)} ao taxista ${nome}?`);
 
         if (confirmacao) {
             // Simular pagamento (exibir mensagem)
-            const mensagem = `O pagamento de € ${precofinal.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
+            const mensagem = `O pagamento de € ${precofinaltaxista.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
             alert(mensagem + '\n\nPagamento bem-sucedido!');
 
             // Mostrar mensagem na página
-            mensagemDiv.innerHTML = `Pagamento bem-sucedido para ${nome}!`;
+            mensagemDiv.innerHTML = `Pagamento de € ${precofinaltaxista.toFixed(2)} para ${nome} bem-sucedido!`;
             mensagemDiv.style.display = 'block';
 
             // Reiniciar o formulário
