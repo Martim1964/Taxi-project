@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const pagamentoDiv = document.getElementById('pagamento');
-    const pagarButton = document.getElementById('pagar');
-    
+    const resultadoDiv = document.getElementById('resultado');
+    const pagarBtn = document.getElementById('pagar');
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -70,50 +71,47 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculando o preço final
         const precofinal = precolitro + precotempo;
 
-        // Calculando o valor para o taxista e para a empresa
-        const precoempresa = precofinal * 0.30; // 30% para a empresa
-        const precotaxista = precofinal - precoempresa; // 70% para o taxista
+        // Calculando o preço para a empresa
+        const precoempresa = precofinal * 0.25; // 25% para a empresa
 
         // Exibindo o resultado na página
-        const resultadoDiv = document.getElementById('resultado');
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
 
-        // Habilitar o formulário de pagamento
+        // Mostrar o formulário de pagamento
         pagamentoDiv.style.display = 'block';
     });
 
-    // Verificar se os campos de nome e telefone foram preenchidos para habilitar o botão de pagar
-    const nomeInput = document.getElementById('nome');
-    const telefoneInput = document.getElementById('telefone');
+    pagarBtn.addEventListener('click', function() {
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
 
-    nomeInput.addEventListener('input', verificarCampos);
-    telefoneInput.addEventListener('input', verificarCampos);
+        // Simular pagamento (exibir mensagem)
+        const mensagem = `O pagamento de € ${precofinal.toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
+        alert(mensagem);
 
-    function verificarCampos() {
-        if (nomeInput.value.trim() !== '' && telefoneInput.value.trim() !== '') {
-            pagarButton.disabled = false;
+        // Reiniciar o formulário
+        form.reset();
+        resultadoDiv.innerHTML = '';
+        pagamentoDiv.style.display = 'none';
+    });
+
+    // Habilitar botão de pagamento quando ambos os campos estiverem preenchidos
+    document.getElementById('nome').addEventListener('input', verificarFormulario);
+    document.getElementById('telefone').addEventListener('input', verificarFormulario);
+
+    function verificarFormulario() {
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
+
+        if (nome.trim() !== '' && telefone.trim() !== '') {
+            pagarBtn.disabled = false;
         } else {
-            pagarButton.disabled = true;
+            pagarBtn.disabled = true;
         }
     }
-
-    // Ação ao clicar no botão de pagar
-    pagarButton.addEventListener('click', function() {
-        const nome = nomeInput.value.trim();
-        const telefone = telefoneInput.value.trim();
-
-        if (nome === '' || telefone === '') {
-            alert('Por favor, preencha todos os campos.');
-            return;
-        }
-
-        // Simulação de pagamento
-        alert(`Pagamento de € ${precotaxista.toFixed(2)} para ${nome} no número ${telefone} foi efetuado com sucesso!`);
-    });
 });
