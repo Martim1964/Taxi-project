@@ -1,58 +1,122 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaxiPay</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-</head>
-<body>
-    <h1>TaxiPay</h1>
-    <form id="simulador-form">
-        <label for="carro">Insira o carro usado para a viagem:</label>
-        <select id="carro" name="carro">
-            <option value="1">Peugeot 208</option>
-            <option value="2">Mercedes GLA</option>
-            <option value="3">Porsche Cayenne GTS</option>
-        </select>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('simulador-form');
+    const pagamentoDiv = document.getElementById('pagamento');
+    const verificarButton = document.getElementById('verificarTaxi');
+    const resultadoDiv = document.getElementById('resultado');
+    let tentativas = 0;
 
-        <label for="tempo">Tempo percorrido (minutos):</label>
-        <input type="number" id="tempo" name="tempo" step="0.01" placeholder="Minutos" required>
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-        <label for="distancia">Distância percorrida (km):</label>
-        <input type="number" id="distancia" name="distancia" step="0.001" placeholder="Quilômetros" required>
+        const carro = form.carro.value;
+        const distancia = parseFloat(form.distancia.value);
+        const tempo = parseFloat(form.tempo.value);
+        const diasemana = form.diasemana.value.toLowerCase();
+        const isferiado = form.isferiado.value.toLowerCase();
 
-        <label for="diasemana">Dia da semana:</label>
-        <select id="diasemana" name="diasemana" required>
-            <option value="segunda">segunda</option>
-            <option value="terca">terça</option>
-            <option value="quarta">quarta</option>
-            <option value="quinta">quinta</option>
-            <option value="sexta">sexta</option>
-            <option value="sabado">sábado</option>
-            <option value="domingo">domingo</option>
-        </select>
+        let tarifaKm;
 
-        <label for="isferiado">É feriado?:</label>
-        <select id="isferiado" name="isferiado" required>
-            <option value="nao">não</option>
-            <option value="sim">sim</option>
-        </select>
+        // Definindo as tarifas baseado no tipo de carro
+        switch (carro) {
+            case "1":
+                tarifaKm = 1.15;
+                break;
+            case "2":
+                tarifaKm = 1.35;
+                break;
+            case "3":
+                tarifaKm = 1.75;
+                break;
+            default:
+                alert("Tipo de carro inválido!");
+                return;
+        }
 
-        <button type="submit">Calcular</button>
-    </form>
-    
-    <div id="resultado"></div>
+        let n = 0;
 
-    <div id="pagamento" style="display: none;">
-        <h2>Informações para Pagamento do Taxista</h2>
-        <label for="numerotaxi">Número de Táxi:</label>
-        <input type="text" id="numerotaxi" name="numerotaxi" required>
+        // Definindo o valor de n baseado no dia da semana e se é feriado
+        if (isferiado === "sim") {
+            n = 1.00; 
+        } else {
+            switch (diasemana) {
+                case "domingo":
+                case "sabado":
+                    n = 0.80; 
+                    break;
+                case "sexta":
+                    n = 0.70; 
+                    break;
+                case "segunda":
+                case "terca":
+                case "quarta":
+                case "quinta":
+                    n = 0.50; 
+                    break;
+                default:
+                    alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
+                    return;
+            }
+        }
 
-        <button id="verificarTaxi">Verificar Número de Táxi</button>
-    </div>
+        // Calculando o preço do tempo
+        const precotempo = (tempo / 10) * n;
 
-    <script defer src="script.js"></script>
-</body>
-</html>
+        // Calculando o preço do litro baseado na distância e na tarifa por km
+        let precolitro = distancia * tarifaKm;
+
+        // Aplicando desconto se a distância for maior que 1000 km
+        if (distancia > 1000) {
+            precolitro -= (distancia - 1000) * 0.10 * tarifaKm; // Desconto de 10% para distâncias acima de 1000 km
+        }
+
+        // Calculando o preço final
+        const precofinal = precolitro + precotempo;
+
+        // Calculando o valor para o taxista e para a empresa
+        const precoempresa = precofinal * 0.30; // 30% para a empresa
+        const precotaxista = precofinal - precoempresa; // 70% para o taxista
+
+        // Exibindo o resultado na página
+        resultadoDiv.innerHTML = `
+            <h2>Resultado do Cálculo</h2>
+            <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
+            <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
+            <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
+            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
+        `;
+
+        // Mostrar o formulário de pagamento
+        pagamentoDiv.style.display = 'block';
+    });
+
+    // Verificar o número de táxi
+    verificarButton.addEventListener('click', function() {
+        const numeroTaxi = document.getElementById('numerotaxi').value.trim();
+
+        // Verificar se o número de táxi é válido (apenas para exemplo)
+        const numeroTaxiValido = validarNumeroTaxi(numeroTaxi);
+
+        if (numeroTaxiValido) {
+            alert(`Número de táxi válido: ${numeroTaxi}`);
+            tentativas = 0; // Resetar tentativas
+        } else {
+            tentativas++;
+            if (tentativas === 1) {
+                alert('Número de táxi incorreto. Por favor, tente novamente.');
+            } else if (tentativas === 2) {
+                alert('Número de táxi incorreto. Última tentativa.');
+            } else if (tentativas >= 3) {
+                alert('Você excedeu o número de tentativas permitidas. Por favor, recarregue a página para tentar novamente.');
+                // Desabilitar o botão após 3 tentativas falhadas
+                verificarButton.disabled = true;
+            }
+        }
+    });
+
+    // Função simples para validar número de táxi (exemplo)
+    function validarNumeroTaxi(numeroTaxi) {
+        // Simulação de lógica para validar o número de táxi
+        // Neste exemplo, vamos considerar válido se o campo não estiver vazio
+        return numeroTaxi !== '';
+    }
+});
