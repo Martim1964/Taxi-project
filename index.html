@@ -43,9 +43,19 @@
         <button type="submit">Calcular</button>
     </form>
     
-    <div id="resultado">
-        <!-- Aqui será inserido o resultado do cálculo e o formulário de pagamento ao taxista -->
+    <div id="resultado"></div>
+
+    <div id="pagamento" style="display: none;">
+        <h2>Informações para Pagamento do Taxista</h2>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="numerotaxi">Número de Táxi:</label>
+        <input type="text" id="numerotaxi" name="numerotaxi" required>
+
+        <button id="verificarTaxi">Verificar Número de Táxi</button>
     </div>
 
+    <script defer src="script.js"></script>
 </body>
 </html>
