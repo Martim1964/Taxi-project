@@ -19,13 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
-                tarifaKm = 1.30;
+                tarifaKm = 1.15;
                 break;
             case "2":
-                tarifaKm = 1.60;
+                tarifaKm = 1.35;
                 break;
             case "3":
-                tarifaKm = 1.90;
+                tarifaKm = 1.75;
                 break;
             default:
                 alert("Tipo de carro inválido!");
@@ -85,8 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
 
-        // Mostrar o formulário de pagamento
-        pagamentoDiv.style.display = 'block';
+        // Mostrar o formulário de pagamento apenas se o número de táxi for fornecido
+        if (document.getElementById('numerotaxi').value.trim() !== '') {
+            pagamentoDiv.style.display = 'block';
+        }
     });
 
     // Verificar o número de táxi
