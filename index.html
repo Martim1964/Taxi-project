@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Viagem de Taxi</title>
+    <title>TaxiPay</title>
     <script src="https://martim1964.github.io/Taxi-project/script.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Simulador de Pagamento de Viagem</h1>
+    <h1>Insira o carro usado para a viagem</h1>
     <form id="simulador-form">
         <label for="carro">Escolha o carro:</label>
         <select id="carro" name="carro">
@@ -24,10 +24,21 @@
         <input type="number" id="distancia" name="distancia" required>
 
         <label for="diasemana">Dia da semana:</label>
-        <input type="text" id="diasemana" name="diasemana" required>
+        <select id="diasemana" name="diasemana">
+            <option value="1">segunda</option>
+            <option value="2">terca</option>
+            <option value="3">quarta</option>
+            <option value="4">quinta</option>
+            <option value="5">sexta</option>
+            <option value="6">sabado</option>
+            <option value="7">domingo</option>
+            
 
-        <label for="isferiado">É feriado? (sim/nao):</label>
-        <input type="text" id="isferiado" name="isferiado" required>
+
+        <label for="isferiado">É feriado?):</label>
+        <select id="isferiado" name="isferiado">
+            <option value="1">sim</option>
+            <option value="2">nao</option>>
 
         <button type="submit">Calcular</button>
     </form>
