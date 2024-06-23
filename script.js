@@ -12,21 +12,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let n = 0;
         switch (diasemana) {
-            case "sábado":
             case "domingo":
-                n = 0.08;
-                break;
-            case "sexta":
-                n = 0.07;
-                break;
             case "segunda":
             case "terça":
             case "quarta":
             case "quinta":
-                n = 0.05;
+                if (diasemana === "sábado" || diasemana === "domingo") {
+                    n = 0.08;
+                } else if (diasemana === "sexta") {
+                    n = 0.07;
+                } else {
+                    n = 0.05;
+                }
                 break;
             default:
-                alert("Dia da semana inválido!");
+                alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
                 return;
         }
 
@@ -56,14 +56,17 @@ document.addEventListener('DOMContentLoaded', function() {
             precofinal = distancia * precolitro;
         }
 
-        const precoTotal = precotempo + precofinal;
+        const precoempresa = precofinal * 0.35; // 35% do preço final para a empresa
+
+        const precotaxista = precofinal - precoempresa; // Valor para o taxista
 
         const resultadoDiv = document.getElementById('resultado');
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precofinal.toFixed(2)}</p>
-            <p>Total: € ${precoTotal.toFixed(2)}</p>
+            <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
+            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
         `;
     });
 });
