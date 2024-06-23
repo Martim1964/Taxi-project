@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const isferiado = form.isferiado.value.toLowerCase();
 
         let tarifaKm;
-        let tarifaTempo;
 
         // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
@@ -37,17 +36,17 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             switch (diasemana) {
                 case "domingo":
-                case "sábado":
-                    n = 0.80; // Aumento de 1000%
+                case "sabado":
+                    n = 0.80; // Aumento de 800%
                     break;
                 case "sexta":
-                    n = 0.70; // Aumento de 1000%
+                    n = 0.70; // Aumento de 700%
                     break;
                 case "segunda":
-                case "terça":
+                case "terca":
                 case "quarta":
                 case "quinta":
-                    n = 0.50; // Aumento de 1000%
+                    n = 0.50; // Aumento de 500%
                     break;
                 default:
                     alert("Dia da semana inválido! Por favor, use um dos dias da semana.");
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.10; // Aumento de 1000%
+            precolitro -= (distancia - 1000) * 0.10; // Desconto de 10% para distâncias acima de 1000 km
         }
 
         // Calculando o preço final
@@ -80,7 +79,4 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço para a empresa: € ${precoempresa.toFixed(2)}</p>
-            <p>Preço para o taxista: € ${precotaxista.toFixed(2)}</p>
-        `;
-    });
-});
+            <p>Preço para o taxista: € ${precotaxista.to
