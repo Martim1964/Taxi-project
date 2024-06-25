@@ -1,34 +1,62 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #e9ecef; /* Novo fundo mais suave */
     margin: 0;
-    padding: 0;
+    padding: 20px; /* Adicionando um espaçamento interno para o conteúdo */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh; /* Usando min-height para garantir que a altura da tela seja coberta */
 }
 
 h1.titulo {
     font-family: 'Courier New', Courier, monospace;
     color: #2c3e50;
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
 }
 
 form, #resultado, #pagamento {
-    background: #fff;
+    background: #ffffff; /* Fundo branco */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 20px;
-    width: 300px;
+    width: 100%; /* Alterado para ocupar a largura completa disponível */
+    max-width: 400px; /* Limitando a largura máxima para uma melhor legibilidade */
 }
 
 label, input, select, button {
     display: block;
     width: 100%;
     margin-bottom: 10px;
+    padding: 8px; /* Espaçamento interno aumentado para melhorar a usabilidade */
+    font-size: 16px; /* Tamanho da fonte ajustado para facilitar a leitura */
+    border: 1px solid #ccc; /* Adicionando uma borda sutil para distinguir os elementos */
+    border-radius: 4px; /* Cantos arredondados nos elementos de formulário */
+    box-sizing: border-box; /* Garantindo que o padding não aumente o tamanho total do elemento */
 }
 
-input, select, button {
-    padding:
+input:focus, select:focus {
+    outline: none; /* Removendo a borda de foco padrão para uma aparência mais limpa */
+    border-color: #66afe9; /* Mudando a cor da borda ao focar para feedback visual */
+}
+
+button {
+    background-color: #007bff; /* Cor de fundo do botão */
+    color: #fff; /* Cor do texto do botão */
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:disabled {
+    background-color: #ced4da; /* Cor de fundo do botão desativado */
+    cursor: not-allowed;
+}
+
+button:hover {
+    background-color: #0056b3; /* Cor de fundo do botão ao passar o mouse */
+}
