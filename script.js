@@ -3,14 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const pagamentoDiv = document.getElementById('pagamento');
     const resultadoDiv = document.getElementById('resultado');
     const pagarBtn = document.getElementById('pagar');
-    const historicoDiv = document.getElementById('historico');
-    const historicoTransacoesDiv = document.getElementById('historico-transacoes');
-    const body = document.body;
 
-    let precofinal = 0;
-
-    // Base de dados simulada
-    const clientes = {}; // Objeto para armazenar clientes e suas transações
+    let precofinal = 0; // Variável para armazenar o preço final
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -20,11 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const tempo = parseFloat(form.tempo.value);
         const diasemana = form.diasemana.value.toLowerCase();
         const isferiado = form.isferiado.value.toLowerCase();
-        const nomeCliente = form.nome.value; // Capturando o nome do cliente
-        const telefoneCliente = form.telefone.value; // Capturando o telefone do cliente
 
         let tarifaKm;
 
+        // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
                 tarifaKm = 1.30;
@@ -42,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let n = 0;
 
+        // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
             n = 1.00; 
         } else {
@@ -65,34 +59,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Calculando o preço do tempo
         const precotempo = (tempo / 10) * n;
+
+        // Calculando o preço do litro baseado na distância e na tarifa por km
         let precolitro = distancia * tarifaKm;
 
+        // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
             precolitro -= (distancia - 1000) * 0.10 * tarifaKm; // Desconto de 10% para distâncias acima de 1000 km
         }
 
+        // Calculando o preço total
         precofinal = precolitro + precotempo;
+
+        // Calculando a comissão da empresa
         const empresaParte = precofinal * 0.25;
         const taxistaParte = precofinal - empresaParte;
 
-        // Armazenando a transação para o cliente específico
-        if (!clientes[telefoneCliente]) {
-            clientes[telefoneCliente] = {
-                nome: nomeCliente,
-                transacoes: []
-            };
-        }
-
-        const transacao = {
-            data: new Date().toLocaleString(),
-            valor: precofinal,
-            empresaParte: empresaParte,
-            taxistaParte: taxistaParte
-        };
-
-        clientes[telefoneCliente].transacoes.push(transacao);
-
+        // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
@@ -102,62 +87,38 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Parte do Taxista após comissão: € ${taxistaParte.toFixed(2)}</p>
         `;
 
+        // Mostrar o formulário de pagamento
         pagamentoDiv.style.display = 'block';
-        body.classList.add('resultado-exibido');
     });
 
     pagarBtn.addEventListener('click', function() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
 
-        if (!clientes[telefone]) {
-            alert('Número de telefone inválido!');
-            return;
-        }
-
-        const transacoesCliente = clientes[telefone].transacoes;
-
+        // Confirmação final do pagamento
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
         if (confirmacao) {
-            alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.\n\nPagamento bem-sucedido!`);
+            // Simular pagamento (exibir mensagem)
+            const mensagem = `O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
+            alert(mensagem + '\n\nPagamento bem-sucedido!');
 
+            // Reiniciar o formulário
             form.reset();
             resultadoDiv.innerHTML = '';
             pagamentoDiv.style.display = 'none';
-            body.classList.remove('resultado-exibido');
-            body.classList.add('pagamento-confirmado');
-
-            exibirHistorico(transacoesCliente);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     });
 
-    function exibirHistorico(transacoes) {
-        historicoTransacoesDiv.innerHTML = `
-            <h3>Histórico de Transações para ${clientes[form.telefone.value].nome}</h3>
-            <ul>
-                ${transacoes.map(transacao => `
-                    <li>
-                        <strong>Data:</strong> ${transacao.data}<br>
-                        <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
-                        <strong>Parte da Empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
-                        <strong>Parte do Taxista:</strong> € ${transacao.taxistaParte.toFixed(2)}
-                    </li>
-                `).join('')}
-            </ul>
-        `;
-
-        historicoDiv.style.display = 'block';
-    }
-
+    // Habilitar botão de pagamento quando ambos os campos estiverem preenchidos
     document.getElementById('nome').addEventListener('input', verificarFormulario);
     document.getElementById('telefone').addEventListener('input', verificarFormulario);
 
     function verificarFormulario() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
 
         if (nome.trim() !== '' && telefone.trim() !== '') {
             pagarBtn.disabled = false;
