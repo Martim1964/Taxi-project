@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const resultadoDiv = document.getElementById('resultado');
@@ -11,9 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const historicoDiv = document.getElementById('historico');
     
     let precofinal = 0;
-    let clienteAtual = null;
     const clientes = {};
-    const cartoes = {};
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -86,8 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
 
-        clienteAtual = telefoneCliente; // Definir o cliente atual para o número de telefone atual
-
         const transacao = {
             data: new Date().toLocaleString(),
             valor: precofinal,
@@ -105,21 +102,15 @@ document.addEventListener('DOMContentLoaded', function() {
         precoTotalP.textContent = `Preço total: € ${precofinal.toFixed(2)}`;
         parteEmpresaP.textContent = `Parte da Empresa: € ${empresaParte.toFixed(2)}`;
         parteTaxistaP.textContent = `Parte do Taxista: € ${taxistaParte.toFixed(2)}`;
-        confirmarPagamentoBtn.disabled = false; // Habilitar botão de confirmação de pagamento
     }
 
     confirmarPagamentoBtn.addEventListener('click', function() {
-        if (clienteAtual) {
-            pagamentoDiv.style.display = 'block'; // Exibir div de informações de pagamento
-        } else {
-            alert('Não há cliente selecionado para pagamento.');
-        }
+        pagamentoDiv.style.display = 'block';
     });
 
     pagarBtn.addEventListener('click', function() {
         const nome = form.nome.value;
-        const telefone = clienteAtual; // Usar o cliente atual
-        const cartao = form.cartao.value;
+        const telefone = form.telefone.value;
 
         if (!clientes[telefone]) {
             alert('Número de telefone inválido!');
@@ -127,10 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const transacoesCliente = clientes[telefone].transacoes;
-
-        if (!cartoes[cartao]) {
-            cartoes[cartao] = []; // Inicializar array de transações para o cartão
-        }
 
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
@@ -141,20 +128,17 @@ document.addEventListener('DOMContentLoaded', function() {
             resultadoDiv.style.display = 'none';
             pagamentoDiv.style.display = 'none';
             pagarBtn.disabled = true;
-
-            cartoes[cartao].push(...transacoesCliente); // Adicionar transações ao cartão correspondente
-
-            exibirHistorico(cartao); // Exibir histórico para o cartão atual
+            exibirHistorico(transacoesCliente);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     });
 
-    function exibirHistorico(cartao) {
+    function exibirHistorico(transacoes) {
         historicoTransacoesDiv.innerHTML = `
-            <h3>Histórico de Transações para o Cartão ${cartao}</h3>
+            <h3>Histórico de Transações para ${clientes[form.telefone.value].nome}</h3>
             <ul>
-                ${cartoes[cartao].map(transacao => `
+                ${transacoes.map(transacao => `
                     <li>
                         <strong>Data:</strong> ${transacao.data}<br>
                         <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
@@ -175,9 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const telefone = form.telefone.value;
 
         if (nome.trim() !== '' && telefone.trim() !== '') {
-            confirmarPagamentoBtn.disabled = false;
+            pagarBtn.disabled = false;
         } else {
-            confirmarPagamentoBtn.disabled = true;
+            pagarBtn.disabled = true;
         }
     }
 });
