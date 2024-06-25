@@ -109,7 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     confirmarPagamentoBtn.addEventListener('click', function() {
-        pagamentoDiv.style.display = 'block'; // Exibir div de informações de pagamento
+        if (clienteAtual) {
+            pagamentoDiv.style.display = 'block'; // Exibir div de informações de pagamento
+        } else {
+            alert('Não há cliente selecionado para pagamento.');
+        }
     });
 
     pagarBtn.addEventListener('click', function() {
