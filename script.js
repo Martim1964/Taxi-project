@@ -5,12 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const parteEmpresaP = document.getElementById('parte-empresa');
     const parteTaxistaP = document.getElementById('parte-taxista');
     const confirmarPagamentoBtn = document.getElementById('confirmar-pagamento');
-    const historicoTransacoesDiv = document.getElementById('historico-transacoes');
     const pagamentoDiv = document.getElementById('pagamento');
-    const historicoDiv = document.getElementById('historico');
-    
+
     let precofinal = 0;
-    const clientes = {};
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -76,22 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const empresaParte = precofinal * 0.25;
         const taxistaParte = precofinal - empresaParte;
 
-        if (!clientes[telefoneCliente]) {
-            clientes[telefoneCliente] = {
-                nome: nomeCliente,
-                transacoes: []
-            };
-        }
-
-        const transacao = {
-            data: new Date().toLocaleString(),
-            valor: precofinal,
-            empresaParte: empresaParte,
-            taxistaParte: taxistaParte
-        };
-
-        clientes[telefoneCliente].transacoes.push(transacao);
-
         exibirResultado(precofinal, empresaParte, taxistaParte);
         resultadoDiv.style.display = 'block';
     });
@@ -106,31 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
         pagamentoDiv.style.display = 'block';
     });
 
-    function realizarPagamento() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
+    // Função para realizar o pagamento omitida por simplicidade
 
-        if (!clientes[telefone]) {
-            alert('Número de telefone inválido!');
-            return;
-        }
-
-        const transacoesCliente = clientes[telefone].transacoes;
-
-        const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
-
-        if (confirmacao) {
-            alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.\n\nPagamento bem-sucedido!`);
-
-            form.reset();
-            resultadoDiv.style.display = 'none';
-            pagamentoDiv.style.display = 'none';
-            exibirHistorico(transacoesCliente);
-        } else {
-            alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
-        }
-    }
-
+    // Verificação do formulário para habilitar botão de pagamento
     document.getElementById('nome').addEventListener('input', verificarFormulario);
     document.getElementById('telefone').addEventListener('input', verificarFormulario);
 
@@ -146,25 +105,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     confirmarPagamentoBtn.disabled = true; // Garantir que o botão de confirmar pagamento esteja desabilitado inicialmente
-    document.getElementById('confirmar-pagamento').addEventListener('click', function() {
-        pagamentoDiv.style.display = 'block';
-        document.getElementById('pagar').addEventListener('click', realizarPagamento); // Adicionar evento de clique para o botão #pagar
-    });
-
-    function exibirHistorico(transacoes) {
-        historicoTransacoesDiv.innerHTML = `
-            <h3>Histórico de Transações para ${clientes[form.telefone.value].nome}</h3>
-            <ul>
-                ${transacoes.map(transacao => `
-                    <li>
-                        <strong>Data:</strong> ${transacao.data}<br>
-                        <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
-                        <strong>Parte da Empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
-                        <strong>Parte do Taxista:</strong> € ${transacao.taxistaParte.toFixed(2)}
-                    </li>
-                `).join('')}
-            </ul>
-        `;
-        historicoDiv.style.display = 'block';
-    }
 });
