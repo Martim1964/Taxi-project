@@ -1,16 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
-    const pagamentoDiv = document.getElementById('pagamento');
     const resultadoDiv = document.getElementById('resultado');
     const pagarBtn = document.getElementById('pagar');
-    const historicoDiv = document.getElementById('historico');
     const historicoTransacoesDiv = document.getElementById('historico-transacoes');
-    const body = document.body;
 
     let precofinal = 0;
-
-    // Base de dados simulada
-    const clientes = {}; // Objeto para armazenar clientes e suas transações
+    const clientes = {};
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -20,8 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const tempo = parseFloat(form.tempo.value);
         const diasemana = form.diasemana.value.toLowerCase();
         const isferiado = form.isferiado.value.toLowerCase();
-        const nomeCliente = form.nome.value; // Capturando o nome do cliente
-        const telefoneCliente = form.telefone.value; // Capturando o telefone do cliente
+        const nomeCliente = form.nome.value;
+        const telefoneCliente = form.telefone.value;
 
         let tarifaKm;
 
@@ -69,14 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let precolitro = distancia * tarifaKm;
 
         if (distancia > 1000) {
-            precolitro -= (distancia - 1000) * 0.10 * tarifaKm; // Desconto de 10% para distâncias acima de 1000 km
+            precolitro -= (distancia - 1000) * 0.10 * tarifaKm;
         }
 
         precofinal = precolitro + precotempo;
         const empresaParte = precofinal * 0.25;
         const taxistaParte = precofinal - empresaParte;
 
-        // Armazenando a transação para o cliente específico
         if (!clientes[telefoneCliente]) {
             clientes[telefoneCliente] = {
                 nome: nomeCliente,
@@ -93,18 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         clientes[telefoneCliente].transacoes.push(transacao);
 
+        exibirResultado(precofinal, empresaParte, taxistaParte);
+        pagarBtn.disabled = false;
+    });
+
+    function exibirResultado(precofinal, empresaParte, taxistaParte) {
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
-            <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
-            <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
-            <p>Preço total que o taxista deve cobrar do cliente: € ${precofinal.toFixed(2)}</p>
+            <p>Preço total: € ${precofinal.toFixed(2)}</p>
             <p>Parte da Empresa: € ${empresaParte.toFixed(2)}</p>
-            <p>Parte do Taxista após comissão: € ${taxistaParte.toFixed(2)}</p>
+            <p>Parte do Taxista: € ${taxistaParte.toFixed(2)}</p>
         `;
-
-        pagamentoDiv.style.display = 'block';
-        body.classList.add('resultado-exibido');
-    });
+    }
 
     pagarBtn.addEventListener('click', function() {
         const nome = form.nome.value;
@@ -124,10 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             form.reset();
             resultadoDiv.innerHTML = '';
-            pagamentoDiv.style.display = 'none';
-            body.classList.remove('resultado-exibido');
-            body.classList.add('pagamento-confirmado');
-
+            pagarBtn.disabled = true;
             exibirHistorico(transacoesCliente);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
@@ -148,8 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 `).join('')}
             </ul>
         `;
-
-        historicoDiv.style.display = 'block';
     }
 
     document.getElementById('nome').addEventListener('input', verificarFormulario);
