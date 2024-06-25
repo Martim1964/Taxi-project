@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const pagarBtn = document.getElementById('pagar');
     const historicoDiv = document.getElementById('historico');
     const historicoTransacoesDiv = document.getElementById('historico-transacoes');
+    const body = document.body;
 
     let precofinal = 0;
 
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         pagamentoDiv.style.display = 'block';
+        body.classList.add('resultado-exibido');
     });
 
     pagarBtn.addEventListener('click', function() {
@@ -115,6 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
             form.reset();
             resultadoDiv.innerHTML = '';
             pagamentoDiv.style.display = 'none';
+            body.classList.remove('resultado-exibido');
+            body.classList.add('pagamento-confirmado');
 
             exibirHistorico(cartao);
         } else {
@@ -126,14 +130,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const transacoes = database[cartao].transactions;
 
         historicoTransacoesDiv.innerHTML = `
-            <h3>Cartão Nº ${cartao}</h3>
+            <h3>Histórico de Transações para o Cartão Nº ${cartao}</h3>
             <ul>
                 ${transacoes.map(transacao => `
                     <li>
-                        <p>Data: ${transacao.data}</p>
-                        <p>Valor total: € ${transacao.valor.toFixed(2)}</p>
-                        <p>Parte da Empresa: € ${transacao.empresaParte.toFixed(2)}</p>
-                        <p>Parte do Taxista: € ${transacao.taxistaParte.toFixed(2)}</p>
+                        <strong>Data:</strong> ${transacao.data}<br>
+                        <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
+                        <strong>Parte da Empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
+                        <strong>Parte do Taxista:</strong> € ${transacao.taxistaParte.toFixed(2)}
                     </li>
                 `).join('')}
             </ul>
