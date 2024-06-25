@@ -79,20 +79,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const taxistaParte = precofinal - empresaParte;
 
         if (!transacoesPorCartao[numeroCartao]) {
-            transacoesPorCartao[numeroCartao] = {
-                transacoes: []
-            };
+            transacoesPorCartao[numeroCartao] = [];
         }
 
         const transacao = {
             data: new Date().toLocaleString(),
             valor: precofinal,
             empresaParte: empresaParte,
-            taxistaParte: taxistaParte,
-            cartao: numeroCartao
+            taxistaParte: taxistaParte
         };
 
-        transacoesPorCartao[numeroCartao].transacoes.push(transacao);
+        transacoesPorCartao[numeroCartao].push(transacao);
 
         exibirResultado(precofinal, empresaParte, taxistaParte);
         resultadoDiv.style.display = 'block';
@@ -108,9 +105,15 @@ document.addEventListener('DOMContentLoaded', function() {
         pagamentoDiv.style.display = 'block';
     });
 
-    
+    function realizarPagamento() {
+        const numeroCartao = parseInt(cartaoInput.value);
 
-        const transacoesCartao = transacoesPorCartao[numeroCartao].transacoes;
+        if (!transacoesPorCartao[numeroCartao] || transacoesPorCartao[numeroCartao].length === 0) {
+            alert('Não há transações associadas a este número de cartão.');
+            return;
+        }
+
+        const transacoesCartao = transacoesPorCartao[numeroCartao];
 
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
@@ -129,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     pagarBtn.addEventListener('click', realizarPagamento);
 
     function exibirHistorico(numeroCartao) {
-        const transacoes = transacoesPorCartao[numeroCartao].transacoes;
+        const transacoes = transacoesPorCartao[numeroCartao];
 
         historicoTransacoesDiv.innerHTML = `
             <h3>Histórico de Transações para o Cartão ${numeroCartao}</h3>
