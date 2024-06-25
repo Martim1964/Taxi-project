@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const resultadoDiv = document.getElementById('resultado');
+    const precoTotalP = document.getElementById('preco-total');
+    const parteEmpresaP = document.getElementById('parte-empresa');
+    const parteTaxistaP = document.getElementById('parte-taxista');
+    const confirmarPagamentoBtn = document.getElementById('confirmar-pagamento');
     const pagarBtn = document.getElementById('pagar');
     const historicoTransacoesDiv = document.getElementById('historico-transacoes');
     const pagamentoDiv = document.getElementById('pagamento');
@@ -90,17 +94,18 @@ document.addEventListener('DOMContentLoaded', function() {
         clientes[telefoneCliente].transacoes.push(transacao);
 
         exibirResultado(precofinal, empresaParte, taxistaParte);
-        pagamentoDiv.style.display = 'block';
+        resultadoDiv.style.display = 'block';
     });
 
     function exibirResultado(precofinal, empresaParte, taxistaParte) {
-        resultadoDiv.innerHTML = `
-            <h2>Resultado do Cálculo</h2>
-            <p>Preço total: € ${precofinal.toFixed(2)}</p>
-            <p>Parte da Empresa: € ${empresaParte.toFixed(2)}</p>
-            <p>Parte do Taxista: € ${taxistaParte.toFixed(2)}</p>
-        `;
+        precoTotalP.textContent = `Preço total: € ${precofinal.toFixed(2)}`;
+        parteEmpresaP.textContent = `Parte da Empresa: € ${empresaParte.toFixed(2)}`;
+        parteTaxistaP.textContent = `Parte do Taxista: € ${taxistaParte.toFixed(2)}`;
     }
+
+    confirmarPagamentoBtn.addEventListener('click', function() {
+        pagamentoDiv.style.display = 'block';
+    });
 
     pagarBtn.addEventListener('click', function() {
         const nome = form.nome.value;
@@ -119,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.\n\nPagamento bem-sucedido!`);
 
             form.reset();
-            resultadoDiv.innerHTML = '';
+            resultadoDiv.style.display = 'none';
             pagamentoDiv.style.display = 'none';
             pagarBtn.disabled = true;
             exibirHistorico(transacoesCliente);
@@ -136,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <li>
                         <strong>Data:</strong> ${transacao.data}<br>
                         <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
-                        <strong>Parte para a empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
+                        <strong>Parte da Empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
                         <strong>Parte do Taxista:</strong> € ${transacao.taxistaParte.toFixed(2)}
                     </li>
                 `).join('')}
