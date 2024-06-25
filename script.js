@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
             <p>Preço do litro: € ${precolitro.toFixed(2)}</p>
             <p>Preço total que o taxista deve cobrar do cliente: € ${precofinal.toFixed(2)}</p>
-            <p>Parte da Empresa (25%): € ${empresaParte.toFixed(2)}</p>
+            <p>Parte da Empresa: € ${empresaParte.toFixed(2)}</p>
             <p>Parte do Taxista após comissão: € ${taxistaParte.toFixed(2)}</p>
         `;
 
