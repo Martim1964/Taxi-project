@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultadoDiv = document.getElementById('resultado');
     const pagarBtn = document.getElementById('pagar');
     const historicoTransacoesDiv = document.getElementById('historico-transacoes');
-
+    const pagamentoDiv = document.getElementById('pagamento');
+    const historicoDiv = document.getElementById('historico');
+    
     let precofinal = 0;
     const clientes = {};
 
@@ -88,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clientes[telefoneCliente].transacoes.push(transacao);
 
         exibirResultado(precofinal, empresaParte, taxistaParte);
-        pagarBtn.disabled = false;
+        pagamentoDiv.style.display = 'block';
     });
 
     function exibirResultado(precofinal, empresaParte, taxistaParte) {
@@ -118,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             form.reset();
             resultadoDiv.innerHTML = '';
+            pagamentoDiv.style.display = 'none';
             pagarBtn.disabled = true;
             exibirHistorico(transacoesCliente);
         } else {
@@ -139,19 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 `).join('')}
             </ul>
         `;
-    }
-
-    document.getElementById('nome').addEventListener('input', verificarFormulario);
-    document.getElementById('telefone').addEventListener('input', verificarFormulario);
-
-    function verificarFormulario() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
-
-        if (nome.trim() !== '' && telefone.trim() !== '') {
-            pagarBtn.disabled = false;
-        } else {
-            pagarBtn.disabled = true;
-        }
+        historicoDiv.style.display = 'block';
     }
 });
