@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('simulador-form');
     const resultadoDiv = document.getElementById('resultado');
@@ -6,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const parteEmpresaP = document.getElementById('parte-empresa');
     const parteTaxistaP = document.getElementById('parte-taxista');
     const confirmarPagamentoBtn = document.getElementById('confirmar-pagamento');
-    const pagarBtn = document.getElementById('pagar');
     const historicoTransacoesDiv = document.getElementById('historico-transacoes');
     const pagamentoDiv = document.getElementById('pagamento');
     const historicoDiv = document.getElementById('historico');
@@ -108,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pagamentoDiv.style.display = 'block';
     });
 
-    pagarBtn.addEventListener('click', function() {
+    function realizarPagamento() {
         const nome = form.nome.value;
         const telefone = form.telefone.value;
 
@@ -127,11 +125,30 @@ document.addEventListener('DOMContentLoaded', function() {
             form.reset();
             resultadoDiv.style.display = 'none';
             pagamentoDiv.style.display = 'none';
-            pagarBtn.disabled = true;
             exibirHistorico(transacoesCliente);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
+    }
+
+    document.getElementById('nome').addEventListener('input', verificarFormulario);
+    document.getElementById('telefone').addEventListener('input', verificarFormulario);
+
+    function verificarFormulario() {
+        const nome = form.nome.value;
+        const telefone = form.telefone.value;
+
+        if (nome.trim() !== '' && telefone.trim() !== '') {
+            confirmarPagamentoBtn.disabled = false; // Habilitar o botão de confirmar pagamento
+        } else {
+            confirmarPagamentoBtn.disabled = true; // Desabilitar o botão de confirmar pagamento
+        }
+    }
+
+    confirmarPagamentoBtn.disabled = true; // Garantir que o botão de confirmar pagamento esteja desabilitado inicialmente
+    document.getElementById('confirmar-pagamento').addEventListener('click', function() {
+        pagamentoDiv.style.display = 'block';
+        document.getElementById('pagar').addEventListener('click', realizarPagamento); // Adicionar evento de clique para o botão #pagar
     });
 
     function exibirHistorico(transacoes) {
@@ -149,19 +166,5 @@ document.addEventListener('DOMContentLoaded', function() {
             </ul>
         `;
         historicoDiv.style.display = 'block';
-    }
-
-    document.getElementById('nome').addEventListener('input', verificarFormulario);
-    document.getElementById('telefone').addEventListener('input', verificarFormulario);
-
-    function verificarFormulario() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
-
-        if (nome.trim() !== '' && telefone.trim() !== '') {
-            pagarBtn.disabled = false;
-        } else {
-            pagarBtn.disabled = true;
-        }
     }
 });
