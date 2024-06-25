@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const carro = parseInt(form.carro.value); // Convertendo para número inteiro
+        const carro = parseInt(form.carro.value);
         const distancia = parseFloat(form.distancia.value);
         const tempo = parseFloat(form.tempo.value);
         const diasemana = form.diasemana.value.toLowerCase();
