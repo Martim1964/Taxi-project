@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let precofinal = 0;
     const clientes = {};
+    const cartoes = {};
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -110,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
     pagarBtn.addEventListener('click', function() {
         const nome = form.nome.value;
         const telefone = form.telefone.value;
+        const cartao = form.cartao.value;
 
         if (!clientes[telefone]) {
             alert('Número de telefone inválido!');
@@ -117,6 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const transacoesCliente = clientes[telefone].transacoes;
+
+        if (!cartoes[cartao]) {
+            cartoes[cartao] = [];
+        }
 
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
@@ -127,15 +133,18 @@ document.addEventListener('DOMContentLoaded', function() {
             resultadoDiv.style.display = 'none';
             pagamentoDiv.style.display = 'none';
             pagarBtn.disabled = true;
-            exibirHistorico(transacoesCliente);
+
+            cartoes[cartao].push(...transacoesCliente);
+            exibirHistorico(cartao);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     });
 
-    function exibirHistorico(transacoes) {
+    function exibirHistorico(cartao) {
+        const transacoes = cartoes[cartao] || [];
         historicoTransacoesDiv.innerHTML = `
-            <h3>Histórico de Transações para ${clientes[form.telefone.value].nome}</h3>
+            <h3>Histórico de Transações para o Cartão ${cartao}</h3>
             <ul>
                 ${transacoes.map(transacao => `
                     <li>
@@ -158,9 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const telefone = form.telefone.value;
 
         if (nome.trim() !== '' && telefone.trim() !== '') {
-            pagarBtn.disabled = false;
+            confirmarPagamentoBtn.disabled = false;
         } else {
-            pagarBtn.disabled = true;
+            confirmarPagamentoBtn.disabled = true;
         }
     }
 });
