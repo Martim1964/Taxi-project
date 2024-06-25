@@ -3,8 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const pagamentoDiv = document.getElementById('pagamento');
     const resultadoDiv = document.getElementById('resultado');
     const pagarBtn = document.getElementById('pagar');
+    const historicoDiv = document.getElementById('historico');
+    const historicoTransacoesDiv = document.getElementById('historico-transacoes');
 
-    let precofinal = 0; // Variável para armazenar o preço final
+    let precofinal = 0;
+
+    // Base de dados simulada
+    const database = {};
+    for (let i = 1; i <= 100; i++) {
+        database[i] = { transactions: [] };
+    }
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -17,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let tarifaKm;
 
-        // Definindo as tarifas baseado no tipo de carro
         switch (carro) {
             case "1":
                 tarifaKm = 1.30;
@@ -35,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let n = 0;
 
-        // Definindo o valor de n baseado no dia da semana e se é feriado
         if (isferiado === "sim") {
             n = 1.00; 
         } else {
@@ -59,25 +65,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Calculando o preço do tempo
         const precotempo = (tempo / 10) * n;
-
-        // Calculando o preço do litro baseado na distância e na tarifa por km
         let precolitro = distancia * tarifaKm;
 
-        // Aplicando desconto se a distância for maior que 1000 km
         if (distancia > 1000) {
             precolitro -= (distancia - 1000) * 0.10 * tarifaKm; // Desconto de 10% para distâncias acima de 1000 km
         }
 
-        // Calculando o preço total
         precofinal = precolitro + precotempo;
-
-        // Calculando a comissão da empresa
         const empresaParte = precofinal * 0.25;
         const taxistaParte = precofinal - empresaParte;
 
-        // Exibindo o resultado na página
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
@@ -87,43 +85,58 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Parte do Taxista após comissão: € ${taxistaParte.toFixed(2)}</p>
         `;
 
-        // Mostrar o formulário de pagamento
         pagamentoDiv.style.display = 'block';
     });
 
     pagarBtn.addEventListener('click', function() {
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
+        const cartao = parseInt(document.getElementById('cartao').value);
 
-        // Confirmação final do pagamento
+        if (!database[cartao]) {
+            alert('Número do cartão inválido!');
+            return;
+        }
+
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
         if (confirmacao) {
-            // Simular pagamento (exibir mensagem)
-            const mensagem = `O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.`;
-            alert(mensagem + '\n\nPagamento bem-sucedido!');
+            const transacao = {
+                data: new Date().toLocaleString(),
+                valor: precofinal,
+                empresaParte: (precofinal * 0.25),
+                taxistaParte: (precofinal * 0.75)
+            };
 
-            // Reiniciar o formulário
+            database[cartao].transactions.push(transacao);
+
+            alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.\n\nPagamento bem-sucedido!`);
+
             form.reset();
             resultadoDiv.innerHTML = '';
             pagamentoDiv.style.display = 'none';
+
+            exibirHistorico(cartao);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     });
 
-    // Habilitar botão de pagamento quando ambos os campos estiverem preenchidos
-    document.getElementById('nome').addEventListener('input', verificarFormulario);
-    document.getElementById('telefone').addEventListener('input', verificarFormulario);
+    function exibirHistorico(cartao) {
+        const transacoes = database[cartao].transactions;
 
-    function verificarFormulario() {
-        const nome = document.getElementById('nome').value;
-        const telefone = document.getElementById('telefone').value;
+        historicoTransacoesDiv.innerHTML = `
+            <h3>Cartão Nº ${cartao}</h3>
+            <ul>
+                ${transacoes.map(transacao => `
+                    <li>
+                        <p>Data: ${transacao.data}</p>
+                        <p>Valor total: € ${transacao.valor.toFixed(2)}</p>
+                        <p>Parte da Empresa: € ${transacao.empresaParte.toFixed(2)}</p>
+                        <p>Parte do Taxista: € ${transacao.taxistaParte.toFixed(2)}</p>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
 
-        if (nome.trim() !== '' && telefone.trim() !== '') {
-            pagarBtn.disabled = false;
-        } else {
-            pagarBtn.disabled = true;
-        }
-    }
-});
+       
