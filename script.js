@@ -108,13 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pagamentoDiv.style.display = 'block';
     });
 
-    function realizarPagamento() {
-        const numeroCartao = parseInt(cartaoInput.value);
-
-        if (!transacoesPorCartao[numeroCartao] || transacoesPorCartao[numeroCartao].transacoes.length === 0) {
-            alert('Número de cartão inválido ou sem transações associadas!');
-            return;
-        }
+    
 
         const transacoesCartao = transacoesPorCartao[numeroCartao].transacoes;
 
