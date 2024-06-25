@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const carro = form.carro.value;
+        const carro = parseInt(form.carro.value); // Convertendo para número inteiro
         const distancia = parseFloat(form.distancia.value);
         const tempo = parseFloat(form.tempo.value);
         const diasemana = form.diasemana.value.toLowerCase();
@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let tarifaKm;
 
         switch (carro) {
-            case "1":
+            case 1:
                 tarifaKm = 1.30;
                 break;
-            case "2":
+            case 2:
                 tarifaKm = 1.60;
                 break;
-            case "3":
+            case 3:
                 tarifaKm = 1.90;
                 break;
             default:
