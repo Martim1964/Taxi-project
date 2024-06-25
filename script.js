@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <li>
                         <strong>Data:</strong> ${transacao.data}<br>
                         <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
-                        <strong>Parte da Empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
+                        <strong>Parte para a empresa:</strong> € ${transacao.empresaParte.toFixed(2)}<br>
                         <strong>Parte do Taxista:</strong> € ${transacao.taxistaParte.toFixed(2)}
                     </li>
                 `).join('')}
