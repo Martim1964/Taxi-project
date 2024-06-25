@@ -10,10 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let precofinal = 0;
 
     // Base de dados simulada
-    const database = {};
-    for (let i = 1; i <= 100; i++) {
-        database[i] = { transactions: [] };
-    }
+    const clientes = {}; // Objeto para armazenar clientes e suas transações
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -23,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const tempo = parseFloat(form.tempo.value);
         const diasemana = form.diasemana.value.toLowerCase();
         const isferiado = form.isferiado.value.toLowerCase();
+        const nomeCliente = form.nome.value; // Capturando o nome do cliente
+        const telefoneCliente = form.telefone.value; // Capturando o telefone do cliente
 
         let tarifaKm;
 
@@ -77,6 +76,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const empresaParte = precofinal * 0.25;
         const taxistaParte = precofinal - empresaParte;
 
+        // Armazenando a transação para o cliente específico
+        if (!clientes[telefoneCliente]) {
+            clientes[telefoneCliente] = {
+                nome: nomeCliente,
+                transacoes: []
+            };
+        }
+
+        const transacao = {
+            data: new Date().toLocaleString(),
+            valor: precofinal,
+            empresaParte: empresaParte,
+            taxistaParte: taxistaParte
+        };
+
+        clientes[telefoneCliente].transacoes.push(transacao);
+
         resultadoDiv.innerHTML = `
             <h2>Resultado do Cálculo</h2>
             <p>Preço do tempo: € ${precotempo.toFixed(2)}</p>
@@ -91,27 +107,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     pagarBtn.addEventListener('click', function() {
-        const nome = document.getElementById('nome').value;
-        const telefone = document.getElementById('telefone').value;
-        const cartao = parseInt(document.getElementById('cartao').value);
+        const nome = form.nome.value;
+        const telefone = form.telefone.value;
 
-        if (!database[cartao]) {
-            alert('Número do cartão inválido!');
+        if (!clientes[telefone]) {
+            alert('Número de telefone inválido!');
             return;
         }
+
+        const transacoesCliente = clientes[telefone].transacoes;
 
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
         if (confirmacao) {
-            const transacao = {
-                data: new Date().toLocaleString(),
-                valor: precofinal,
-                empresaParte: (precofinal * 0.25),
-                taxistaParte: (precofinal * 0.75)
-            };
-
-            database[cartao].transactions.push(transacao);
-
             alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.\n\nPagamento bem-sucedido!`);
 
             form.reset();
@@ -120,17 +128,15 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.remove('resultado-exibido');
             body.classList.add('pagamento-confirmado');
 
-            exibirHistorico(cartao);
+            exibirHistorico(transacoesCliente);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     });
 
-    function exibirHistorico(cartao) {
-        const transacoes = database[cartao].transactions;
-
+    function exibirHistorico(transacoes) {
         historicoTransacoesDiv.innerHTML = `
-            <h3>Histórico de Transações para o Cartão Nº ${cartao}</h3>
+            <h3>Histórico de Transações para ${clientes[form.telefone.value].nome}</h3>
             <ul>
                 ${transacoes.map(transacao => `
                     <li>
@@ -148,14 +154,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('nome').addEventListener('input', verificarFormulario);
     document.getElementById('telefone').addEventListener('input', verificarFormulario);
-    document.getElementById('cartao').addEventListener('input', verificarFormulario);
 
     function verificarFormulario() {
-        const nome = document.getElementById('nome').value;
-        const telefone = document.getElementById('telefone').value;
-        const cartao = document.getElementById('cartao').value;
+        const nome = form.nome.value;
+        const telefone = form.telefone.value;
 
-        if (nome.trim() !== '' && telefone.trim() !== '' && cartao.trim() !== '') {
+        if (nome.trim() !== '' && telefone.trim() !== '') {
             pagarBtn.disabled = false;
         } else {
             pagarBtn.disabled = true;
