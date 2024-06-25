@@ -139,4 +139,22 @@ document.addEventListener('DOMContentLoaded', function() {
             </ul>
         `;
 
-       
+        historicoDiv.style.display = 'block';
+    }
+
+    document.getElementById('nome').addEventListener('input', verificarFormulario);
+    document.getElementById('telefone').addEventListener('input', verificarFormulario);
+    document.getElementById('cartao').addEventListener('input', verificarFormulario);
+
+    function verificarFormulario() {
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
+        const cartao = document.getElementById('cartao').value;
+
+        if (nome.trim() !== '' && telefone.trim() !== '' && cartao.trim() !== '') {
+            pagarBtn.disabled = false;
+        } else {
+            pagarBtn.disabled = true;
+        }
+    }
+});
