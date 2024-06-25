@@ -8,9 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const historicoTransacoesDiv = document.getElementById('historico-transacoes');
     const pagamentoDiv = document.getElementById('pagamento');
     const historicoDiv = document.getElementById('historico');
-    
+    const cartaoInput = document.getElementById('cartao');
+
     let precofinal = 0;
-    const clientes = {};
+    const transacoesPorCartao = {};
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const isferiado = form.isferiado.value.toLowerCase();
         const nomeCliente = form.nome.value;
         const telefoneCliente = form.telefone.value;
+        const numeroCartao = parseInt(cartaoInput.value);
 
         let tarifaKm;
 
@@ -76,9 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const empresaParte = precofinal * 0.25;
         const taxistaParte = precofinal - empresaParte;
 
-        if (!clientes[telefoneCliente]) {
-            clientes[telefoneCliente] = {
-                nome: nomeCliente,
+        if (!transacoesPorCartao[numeroCartao]) {
+            transacoesPorCartao[numeroCartao] = {
                 transacoes: []
             };
         }
@@ -87,10 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
             data: new Date().toLocaleString(),
             valor: precofinal,
             empresaParte: empresaParte,
-            taxistaParte: taxistaParte
+            taxistaParte: taxistaParte,
+            cartao: numeroCartao
         };
 
-        clientes[telefoneCliente].transacoes.push(transacao);
+        transacoesPorCartao[numeroCartao].transacoes.push(transacao);
 
         exibirResultado(precofinal, empresaParte, taxistaParte);
         resultadoDiv.style.display = 'block';
@@ -107,53 +109,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function realizarPagamento() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
+        const numeroCartao = parseInt(cartaoInput.value);
 
-        if (!clientes[telefone]) {
-            alert('Número de telefone inválido!');
+        if (!transacoesPorCartao[numeroCartao] || transacoesPorCartao[numeroCartao].transacoes.length === 0) {
+            alert('Número de cartão inválido ou sem transações associadas!');
             return;
         }
 
-        const transacoesCliente = clientes[telefone].transacoes;
+        const transacoesCartao = transacoesPorCartao[numeroCartao].transacoes;
 
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
 
         if (confirmacao) {
-            alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito para ${nome} através do número de telefone ${telefone}.\n\nPagamento bem-sucedido!`);
+            alert(`O pagamento de € ${(precofinal * 0.25).toFixed(2)} foi feito através do número do cartão ${numeroCartao}.\n\nPagamento bem-sucedido!`);
 
             form.reset();
             resultadoDiv.style.display = 'none';
             pagamentoDiv.style.display = 'none';
-            exibirHistorico(transacoesCliente);
+            exibirHistorico(transacoesCartao);
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     }
 
-    document.getElementById('nome').addEventListener('input', verificarFormulario);
-    document.getElementById('telefone').addEventListener('input', verificarFormulario);
-
-    function verificarFormulario() {
-        const nome = form.nome.value;
-        const telefone = form.telefone.value;
-
-        if (nome.trim() !== '' && telefone.trim() !== '') {
-            confirmarPagamentoBtn.disabled = false; // Habilitar o botão de confirmar pagamento
-        } else {
-            confirmarPagamentoBtn.disabled = true; // Desabilitar o botão de confirmar pagamento
-        }
-    }
-
-    confirmarPagamentoBtn.disabled = true; // Garantir que o botão de confirmar pagamento esteja desabilitado inicialmente
-    document.getElementById('confirmar-pagamento').addEventListener('click', function() {
+    confirmarPagamentoBtn.addEventListener('click', function() {
         pagamentoDiv.style.display = 'block';
-        document.getElementById('pagar').addEventListener('click', realizarPagamento); // Adicionar evento de clique para o botão #pagar
+        document.getElementById('pagar').addEventListener('click', realizarPagamento);
     });
 
     function exibirHistorico(transacoes) {
         historicoTransacoesDiv.innerHTML = `
-            <h3>Histórico de Transações para ${clientes[form.telefone.value].nome}</h3>
+            <h3>Histórico de Transações para o Cartão ${transacoes[0].cartao}</h3>
             <ul>
                 ${transacoes.map(transacao => `
                     <li>
