@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const historicoDiv = document.getElementById('historico');
     
     let precofinal = 0;
+    let clienteAtual = null;
     const clientes = {};
     const cartoes = {};
 
@@ -85,6 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
 
+        clienteAtual = telefoneCliente; // Definir o cliente atual para o número de telefone atual
+
         const transacao = {
             data: new Date().toLocaleString(),
             valor: precofinal,
@@ -102,15 +105,16 @@ document.addEventListener('DOMContentLoaded', function() {
         precoTotalP.textContent = `Preço total: € ${precofinal.toFixed(2)}`;
         parteEmpresaP.textContent = `Parte da Empresa: € ${empresaParte.toFixed(2)}`;
         parteTaxistaP.textContent = `Parte do Taxista: € ${taxistaParte.toFixed(2)}`;
+        confirmarPagamentoBtn.disabled = false; // Habilitar botão de confirmação de pagamento
     }
 
     confirmarPagamentoBtn.addEventListener('click', function() {
-        pagamentoDiv.style.display = 'block';
+        pagamentoDiv.style.display = 'block'; // Exibir div de informações de pagamento
     });
 
     pagarBtn.addEventListener('click', function() {
         const nome = form.nome.value;
-        const telefone = form.telefone.value;
+        const telefone = clienteAtual; // Usar o cliente atual
         const cartao = form.cartao.value;
 
         if (!clientes[telefone]) {
@@ -121,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const transacoesCliente = clientes[telefone].transacoes;
 
         if (!cartoes[cartao]) {
-            cartoes[cartao] = [];
+            cartoes[cartao] = []; // Inicializar array de transações para o cartão
         }
 
         const confirmacao = confirm(`Tem certeza que deseja pagar a parte da empresa (€ ${(precofinal * 0.25).toFixed(2)})?`);
@@ -134,19 +138,19 @@ document.addEventListener('DOMContentLoaded', function() {
             pagamentoDiv.style.display = 'none';
             pagarBtn.disabled = true;
 
-            cartoes[cartao].push(...transacoesCliente);
-            exibirHistorico(cartao);
+            cartoes[cartao].push(...transacoesCliente); // Adicionar transações ao cartão correspondente
+
+            exibirHistorico(cartao); // Exibir histórico para o cartão atual
         } else {
             alert('Pagamento não confirmado. Por favor, revise os dados e confirme novamente.');
         }
     });
 
     function exibirHistorico(cartao) {
-        const transacoes = cartoes[cartao] || [];
         historicoTransacoesDiv.innerHTML = `
             <h3>Histórico de Transações para o Cartão ${cartao}</h3>
             <ul>
-                ${transacoes.map(transacao => `
+                ${cartoes[cartao].map(transacao => `
                     <li>
                         <strong>Data:</strong> ${transacao.data}<br>
                         <strong>Valor:</strong> € ${transacao.valor.toFixed(2)}<br>
